@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src", // O la carpeta que consideres raíz
+    "paths": {
+      "@/*": ["*"] // Alias @ para la raíz (src en este caso)
+    }
+  },
+  "include": ["src"] // Incluye los archivos de tu proyecto
+}
