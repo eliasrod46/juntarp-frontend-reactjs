@@ -67,17 +67,17 @@ export const UsersIndexTable = () => {
       sortable: true,
     },
 
-    // {
-    //   name: "Acciones",
-    //   cell: (row) => (
-    //     <AcctionRow
-    //       row={row}
-    //       handleOpenShowModal={handleOpenShowModal}
-    //       handleOpenDeleteModal={handleOpenDeleteModal}
-    //     />
-    //   ),
-    //   ignoreRowClick: true,
-    // },
+    {
+      name: "Acciones",
+      cell: (row) => (
+        <AcctionRow
+          row={row}
+          handleOpenShowModal={handleOpenShowModal}
+          // handleOpenDeleteModal={handleOpenDeleteModal}
+        />
+      ),
+      ignoreRowClick: true,
+    },
   ];
 
   // ============================================> modals handlers

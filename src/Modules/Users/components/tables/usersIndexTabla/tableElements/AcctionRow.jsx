@@ -26,7 +26,7 @@ export const AcctionRow = ({
           </svg>
         </Button>
       </div>
-      <div>
+      {/* <div>
         <Button
           onClick={() => handleOpenDeleteModal(row)}
           variant="text"
@@ -47,7 +47,7 @@ export const AcctionRow = ({
             />
           </svg>
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

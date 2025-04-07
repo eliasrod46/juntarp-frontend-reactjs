@@ -26,7 +26,7 @@ export const ShowUserModal = ({
     email: "",
   };
 
-  const { getUsers, createUser, errors } = useContext(UsersContext);
+  const { getUsers, createUser, errors, updateUser } = useContext(UsersContext);
   const { authTokens } = useContext(AuthContext);
   const [dataForm, setDataForm] = useState(dataFormBase);
 
@@ -79,7 +79,7 @@ export const ShowUserModal = ({
       };
 
       if (row) {
-        // await updateDocente(row.id, dataToSend);
+        await updateUser(authTokens, row.id, dataToSend);
       } else {
         await createUser(authTokens, dataToSend);
       }
@@ -101,7 +101,8 @@ export const ShowUserModal = ({
     return (
       <div className="my-5">
         <h2 className="text-center text-2xl font-bold text-gray-800">
-          {row ? "Ver" : "Crear"} Usuario {row ? `: ${row.fullName}` : ""}
+          {row ? "Actualizar" : "Crear"} Usuario{" "}
+          {row ? `: ${row.username}` : ""}
         </h2>
       </div>
     );
