@@ -278,7 +278,7 @@ export const FoldersIndexTable = ({ tab }) => {
       setAlertMessage("Carpetas movida con exito.");
       setShowAlertFlag(true);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

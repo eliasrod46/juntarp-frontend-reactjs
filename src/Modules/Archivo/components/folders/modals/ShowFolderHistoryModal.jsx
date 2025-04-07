@@ -20,23 +20,23 @@ export const ShowFolderHistoryModal = ({
   // structures
   const [history, serHistory] = useState([]);
   const columns = [
-    // {
-    //   name: "situacion",
-    //   selector: (row) => {
-    //     if (!row.income_date && !row.outcome_date) {
-    //       return "Sin estado";
-    //     } else if (row.income_date && !row.outcome_date) {
-    //       return "En archivo";
-    //     } else if (!row.income_date && row.outcome_date) {
-    //       return "Fuera de archivo";
-    //     }
-    //   },
-    // },
+    {
+      name: "situacion",
+      selector: (row) => {
+        if (!row.income_date && !row.outcome_date) {
+          return "Sin estado";
+        } else if (row.income_date && !row.outcome_date) {
+          return "En archivo";
+        } else if (!row.income_date && row.outcome_date) {
+          return "Fuera de archivo";
+        }
+      },
+    },
     {
       name: "fecha de ingreso",
       selector: (row) => {
         if (!row.income_date) {
-          return "carpeta en archivo";
+          return "-";
         } else {
           return dayjs(row.income_date).format("DD/MM/YYYY");
         }
@@ -46,7 +46,7 @@ export const ShowFolderHistoryModal = ({
       name: "fecha de salida",
       selector: (row) => {
         if (!row.outcome_date) {
-          return "carpeta fuera de archivo";
+          return "-";
         } else {
           return dayjs(row.outcome_date).format("DD/MM/YYYY");
         }
@@ -64,6 +64,12 @@ export const ShowFolderHistoryModal = ({
       name: "Observaciones",
       selector: (row) => {
         return row.observations;
+      },
+    },
+    {
+      name: "Usuario",
+      selector: (row) => {
+        return `${row.user.lastname}, ${row.user.name}`;
       },
     },
   ];
