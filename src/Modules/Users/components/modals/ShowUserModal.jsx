@@ -224,7 +224,7 @@ export const ShowUserModal = ({
               </div>
             </div>
 
-            {/* username */}
+            {/* email */}
             <div>
               <div>
                 <TextField

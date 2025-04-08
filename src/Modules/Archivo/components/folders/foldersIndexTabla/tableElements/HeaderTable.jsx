@@ -42,6 +42,12 @@ export const HeaderTable = ({
             size="small"
           />
         </div>
+        {/* new */}
+        <div className="my-5">
+          <Button onClick={() => handleOpenShowModal()} variant="outlined">
+            +
+          </Button>
+        </div>
         {/* general details */}
         {hasSuperAdminArchivoAccess ? (
           <div className="my-5 flex flex-col items-center justify-center gap-y-1">
