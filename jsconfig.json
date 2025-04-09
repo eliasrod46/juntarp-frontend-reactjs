@@ -5,5 +5,5 @@
       "@/*": ["*"] // Alias @ para la raíz (src en este caso)
     }
   },
-  "include": ["src"] // Incluye los archivos de tu proyecto
+  "include": ["src", "src/Modules/ConfigModule/context/RolesContext.jsx"] // Incluye los archivos de tu proyecto
 }

@@ -18,31 +18,33 @@ import { ArchivoRoutes } from "./Modules/Archivo/routes/index.js";
 import { MainRoutes } from "./Modules/Main/routes/index.js";
 import { GuessLayout } from "./layouts/GuessLayout.jsx";
 import { UsersRoutes } from "./Modules/Users/routes/index.js";
+import { ConfigRoutes } from "./Modules/ConfigModule/routes/index.js";
 
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <AuthProvider>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Routes>
-          {/* Public routes */}
-          <Route element={<GuessLayout />}>
-            <Route path="/" element={<App />} />
-            <Route path="auth/*" element={<AuthRoutes />} />
-          </Route>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Routes>
+        {/* Public routes */}
+        <Route element={<GuessLayout />}>
+          <Route path="/" element={<App />} />
+          <Route path="auth/*" element={<AuthRoutes />} />
+        </Route>
 
-          {/* Protected routes */}
-          <Route element={<ProtectedAuthRoute />}>
-            <Route element={<BasicLayout />}>
-              <Route path="inicio/*" element={<MainRoutes />} />
-              <Route path="docentes/*" element={<DocentesRoutes />} />
-              <Route path="usuarios/*" element={<UsersRoutes />} />
-              <Route path="ciclos/*" element={<CiclosRoutes />} />
-              <Route path="archivo/*" element={<ArchivoRoutes />} />
-              <Route path="turnos/*" element={<TurnosRoutes />} />
-            </Route>
+        {/* Protected routes */}
+        <Route element={<ProtectedAuthRoute />}>
+          <Route element={<BasicLayout />}>
+            <Route path="inicio/*" element={<MainRoutes />} />
+            <Route path="docentes/*" element={<DocentesRoutes />} />
+            <Route path="usuarios/*" element={<UsersRoutes />} />
+            <Route path="ciclos/*" element={<CiclosRoutes />} />
+            <Route path="archivo/*" element={<ArchivoRoutes />} />
+            <Route path="turnos/*" element={<TurnosRoutes />} />
+            <Route path="configuracion/*" element={<ConfigRoutes />} />
           </Route>
-        </Routes>
-      </LocalizationProvider>
+        </Route>
+      </Routes>
+    </LocalizationProvider>
     </AuthProvider>
   </BrowserRouter>
 );

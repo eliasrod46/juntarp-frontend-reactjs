@@ -13,10 +13,11 @@ export const loginApi = async (data) => {
       body: JSON.stringify(data), // Convertimos los datos a formato JSON
     });
     const resJson = await res.json();
+    
     return resJson;
   } catch (error) {
     //query to backend fail (TODO something)
-    // console.log(error);
+    console.log(error);
     return { error: "generalApi" };
   }
 };

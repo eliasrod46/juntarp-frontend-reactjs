@@ -1,5 +1,5 @@
 //modals
-export * from "./modals/DeleteDocenteModal";
+export * from "./modals/LinkRolesModal";
 export * from "./modals/ShowUserModal";
 
 //tables
