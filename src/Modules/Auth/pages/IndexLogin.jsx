@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export function IndexLogin() {
   const navigate = useNavigate(); // Hook para navegar
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("34328739");
+  const [password, setPassword] = useState("34328739");
   const [message, setMessage] = useState("");
   const { login } = useContext(AuthContext);
 

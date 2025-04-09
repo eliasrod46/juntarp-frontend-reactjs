@@ -16,9 +16,16 @@ export const AuthProvider = ({ children }) => {
       return storedToken || null;
     }
   });
-  const [authUser, setAuthUser] = useState(
-    JSON.parse(localStorage.getItem("userData")) || null
-  );
+  const [authUser, setAuthUser] = useState(() => {
+    const storedToken = localStorage.getItem("userData");
+    try {
+      // Intentar parsear por si acaso alguna vez se guardó como JSON
+      return JSON.parse(storedToken) || null;
+    } catch (e) {
+      // Si no es un JSON válido, devolverlo tal cual (debería ser la cadena del token)
+      return storedToken || null;
+    }
+  });
   const [errors, setErrors] = useState();
   const [loading, setLoading] = useState();
 
@@ -69,7 +76,7 @@ export const AuthProvider = ({ children }) => {
         }
       } else {
         setTokens(responseFromApi.token); // Almacena tokens en el contexto
-        setUser(responseFromApi.user_data); // Almacena tokens en el contexto
+        setUser(responseFromApi.userData); // Almacena tokens en el contexto
         setErrors([]); // Limpiamos errores si la actualización es exitosa
         return Promise.resolve(); // Resolvemos la promesa si no hay errores
       }

@@ -5,6 +5,7 @@ import {
   deleteElementApi,
   getElementsApi,
   updateElementApi,
+  assignRolesApi
 } from "@/Modules/Users/apis";
 
 export function useUsers() {
@@ -13,7 +14,6 @@ export function useUsers() {
   const [loading, setLoading] = useState(true);
 
   const getElements = useCallback(async (authTokens) => {
-    
     // useCallback para evitar re-renderizados innecesarios
     setLoading(true); // Establecer loading a true ANTES de la llamada a la API
     try {
@@ -28,9 +28,9 @@ export function useUsers() {
     }
   }, []);
 
-  const updateElement = useCallback(async (authTokens,id, data) => {
+  const updateElement = useCallback(async (authTokens, id, data) => {
     try {
-      const responseFromApi = await updateElementApi(authTokens,id, data);
+      const responseFromApi = await updateElementApi(authTokens, id, data);
 
       if (responseFromApi.message) {
         if (typeof responseFromApi.message == "string") {
@@ -70,9 +70,9 @@ export function useUsers() {
     }
   }, []);
 
-  const createElement = useCallback(async (authTokens,data) => {
+  const createElement = useCallback(async (authTokens, data) => {
     try {
-      const responseFromApi = await createElementApi(authTokens,data);
+      const responseFromApi = await createElementApi(authTokens, data);
 
       if (responseFromApi.message) {
         if (typeof responseFromApi.message == "string") {
@@ -112,9 +112,9 @@ export function useUsers() {
     }
   }, []);
 
-  const deleteElement = async (authTokens,id) => {
+  const deleteElement = async (authTokens, id) => {
     try {
-      const responseFromApi = await deleteElementApi(authTokens,id);
+      const responseFromApi = await deleteElementApi(authTokens, id);
       // console.log(responseFromApi);
     } catch (error) {
       // ... (manejo de errores)
@@ -122,6 +122,48 @@ export function useUsers() {
       setLoading(false);
     }
   };
+
+  const assignRoles = useCallback(async (authTokens, data) => {
+    try {
+      const responseFromApi = await assignRolesApi(authTokens, data);
+
+      if (responseFromApi.message) {
+        if (typeof responseFromApi.message == "string") {
+          //global error
+          setErrors(responseFromApi.message);
+          return Promise.reject(responseFromApi.message); // Rechazamos la promesa con los errores
+        } else {
+          //validation errors
+          const sanitizedErrors = responseFromApi.message.reduce(
+            (acumulador, cadena) => {
+              const palabras = cadena.trim().split(/\s+/);
+              const primeraPalabra = palabras[0].toLowerCase();
+
+              if (!acumulador[primeraPalabra]) {
+                acumulador[primeraPalabra] = [];
+              }
+
+              acumulador[primeraPalabra].push(cadena);
+
+              return acumulador;
+            },
+            {}
+          );
+
+          setErrors(sanitizedErrors);
+          return Promise.reject(sanitizedErrors); // Rechazamos la promesa con los errores
+        }
+      } else {
+        setErrors([]); // Limpiamos errores si la actualización es exitosa
+        return Promise.resolve(); // Resolvemos la promesa si no hay errores
+      }
+    } catch (error) {
+      // ... (manejo de errores)
+      return Promise.reject(error); // Rechazamos la promesa en caso de error en la petición
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const clearErrors = async () => {
     setErrors([]);
@@ -133,6 +175,7 @@ export function useUsers() {
     updateElement,
     createElement,
     deleteElement,
+    assignRoles,
     errors,
     clearErrors,
     loading,

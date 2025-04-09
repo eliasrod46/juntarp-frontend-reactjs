@@ -2,17 +2,17 @@
 import { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { AcctionRow, HeaderTable, AlertTable } from "./tableElements";
-import {
-  DeleteDocenteModal,
-  ShowDocenteModal,
-} from "@/Modules/Docentes/components";
-import { UsersContext } from "@/Modules/Users/context";
+import { CiclosContext } from "@/Modules/Ciclos/context";
+import { ShowCicloModal } from "@/Modules/Ciclos/components";
+import dayjs from "dayjs";
+import { RolesContext } from "@/Modules/ConfigModule/context";
+import { ShowRolModal } from "../..";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
-import { LinkRolesModal, ShowUserModal } from "../..";
 
-export const UsersIndexTable = () => {
+export const RolesIndexTable = () => {
   //context
-  const { users, getUsers, clearErrors, loading } = useContext(UsersContext);
+  const { roles, getRoles, clearErrors, loading, errors } =
+    useContext(RolesContext);
   const { authTokens } = useContext(AuthContext);
   //dataTable
   const [rows, setRows] = useState([]);
@@ -20,7 +20,7 @@ export const UsersIndexTable = () => {
 
   // //modals
   const [showModalFlag, setShowModalFlag] = useState(false);
-  const [openLinkRolesModalFlag, setOpenLinkRolesModalFlag] = useState(false);
+  // const [deleteModalFlag, setDeleteModalFlag] = useState(false);
 
   //alerts
   const [showAlertFlag, setShowAlertFlag] = useState(false);
@@ -29,60 +29,20 @@ export const UsersIndexTable = () => {
 
   // get all docentes
   useEffect(() => {
-    getUsers(authTokens);
+    getRoles(authTokens);
   }, []);
 
   // update rows state(when ciclos change)
   useEffect(() => {
-    setRows(users);
-  }, [users]);
+    setRows(roles);
+  }, [roles]);
 
   // ============================================> Datatable
   // collums
   const columns = [
     {
-      name: "DNI",
-      selector: (row) => row.dni,
-      sortable: true,
-    },
-    {
-      name: "Apellido",
-      selector: (row) => row.lastname,
-      sortable: true,
-    },
-    {
-      name: "Nombre",
+      name: "nombre",
       selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Usuario",
-      selector: (row) => row.username,
-      sortable: true,
-    },
-
-    {
-      name: "Email",
-      selector: (row) => row.email,
-      sortable: true,
-    },
-
-    {
-      name: "Roles",
-
-      selector: (row) => {
-        const roles = row.roles;
-        if (roles == 0) {
-          return "sin roles vinculados";
-        }
-        return (
-          <ul>
-            {roles.map((role) => (
-              <li key={role.id}>{role.name}</li>
-            ))}
-          </ul>
-        );
-      },
       sortable: true,
     },
 
@@ -92,7 +52,7 @@ export const UsersIndexTable = () => {
         <AcctionRow
           row={row}
           handleOpenShowModal={handleOpenShowModal}
-          handleOpenLinkRolesModal={handleOpenLinkRolesModal}
+          // handleOpenDeleteModal={handleOpenDeleteModal}
         />
       ),
       ignoreRowClick: true,
@@ -101,7 +61,7 @@ export const UsersIndexTable = () => {
 
   // ============================================> modals handlers
 
-  // // showModal
+  // showModal
   const handleOpenShowModal = (row = null) => {
     setShowModalFlag(true);
     setRow(row);
@@ -118,22 +78,11 @@ export const UsersIndexTable = () => {
     setRow(null);
   };
 
-  // deleteModal
-  const handleOpenLinkRolesModal = (row) => {
-    setOpenLinkRolesModalFlag(true);
-    setRow(row);
-  };
-
-  const handleCloseLinkRolesModal = (clickClose = false) => {
-    setOpenLinkRolesModalFlag(false);
-    clearErrors();
-    if (!clickClose) {
-      setSeverity("success");
-      setAlertMessage(`Roles actualizados`);
-      setShowAlertFlag(true);
-    }
-    setRow(null);
-  };
+  // // deleteModal
+  // const handleOpenDeleteModal = (row) => {
+  //   setDeleteModalFlag(true);
+  //   setRow(row);
+  // };
 
   // const handleCloseDeleteModal = (clickClose = false) => {
   //   setDeleteModalFlag(false);
@@ -149,17 +98,15 @@ export const UsersIndexTable = () => {
   // ============================================> table handlers
   const searchFilterChangeHandler = (e) => {
     const word = e.target.value;
-    const dataToFilter = users;
-    const filteredRows = dataToFilter.filter(
-      (user) =>
-        user.lastname.toLowerCase().includes(word.toLowerCase()) ||
-        user.dni.toLowerCase().includes(word.toLowerCase()) ||
-        user.username.toLowerCase().includes(word.toLowerCase()) ||
-        user.name.toLowerCase().includes(word.toLowerCase())
+    const dataToFilter = roles;
+    const filteredRows = dataToFilter.filter((role) =>
+      role.name.toLowerCase().includes(word.toLowerCase())
     );
 
     setRows(filteredRows);
   };
+
+  // ============================================> Logic function on table
 
   // ============================================> render
   return (
@@ -168,6 +115,7 @@ export const UsersIndexTable = () => {
         "cargando"
       ) : (
         <div>
+          {errors}
           {/* alert seccion */}
           <AlertTable
             severity={severity}
@@ -186,7 +134,7 @@ export const UsersIndexTable = () => {
           </div>
 
           {/* modals */}
-          <ShowUserModal
+          <ShowRolModal
             row={row}
             showModalFlag={showModalFlag}
             handleCloseShowModal={handleCloseShowModal}
@@ -194,14 +142,14 @@ export const UsersIndexTable = () => {
             setAlertMessage={setAlertMessage}
             setShowAlertFlag={setShowAlertFlag}
           />
-          <LinkRolesModal
+          {/* <DeleteDocenteModal
             row={row}
-            openLinkRolesModalFlag={openLinkRolesModalFlag}
-            handleCloseLinkRolesModal={handleCloseLinkRolesModal}
+            deleteModalFlag={deleteModalFlag}
+            handleCloseDeleteModal={handleCloseDeleteModal}
             setSeverity={setSeverity}
             setAlertMessage={setAlertMessage}
             setShowAlertFlag={setShowAlertFlag}
-          />
+          /> */}
         </div>
       )}
     </div>

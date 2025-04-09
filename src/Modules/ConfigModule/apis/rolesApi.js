@@ -1,18 +1,14 @@
 import {
-  getElementsBase,
-  updateElementBase,
   createElementBase,
   deleteElementBase,
+  getElementsBase,
+  updateElementBase,
 } from "../../../apis/generalApi";
 
-const endpointURL = `/user`;
-
-export const getElementsApi = async (authTokens) => {
+const endpointURL = `/roles`;
+export const getElementsIngresoApi = async (authTokens) => {
   try {
-    const check = await getElementsBase(authTokens, endpointURL);
-    // console.log(check);
-
-    return check;
+    return await getElementsBase(authTokens, `${endpointURL}`);
   } catch (error) {
     // console.log(error);
     return false;
@@ -40,19 +36,6 @@ export const createElementApi = async (authTokens, data) => {
 export const deleteElementApi = async (authTokens, id) => {
   try {
     return await deleteElementBase(authTokens, endpointURL, id);
-  } catch (error) {
-    // console.log(error);
-    return false;
-  }
-};
-
-export const assignRolesApi = async (authTokens, data) => {
-  try {
-    return await createElementBase(
-      authTokens,
-      `${endpointURL}/assign-roles`,
-      data
-    );
   } catch (error) {
     // console.log(error);
     return false;
