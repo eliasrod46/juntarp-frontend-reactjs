@@ -101,18 +101,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const can = async (permissions_request) => {
+  const can = async (permissions_request = []) => {
     const authorization = [
       ...authUser.auth.roles,
       ...authUser.auth.permissions,
     ];
 
-    for (const permision of permissions_request) {
-      if (authorization.includes(permision)) {
-        return true;
+    if (permissions_request.length >= 1) {
+      for (const permision of permissions_request) {
+        if (authorization.includes(permision)) {
+          return true;
+        }
       }
+      return false;
+    } else {
+      return false;
     }
-    return false;
   };
 
   return (
