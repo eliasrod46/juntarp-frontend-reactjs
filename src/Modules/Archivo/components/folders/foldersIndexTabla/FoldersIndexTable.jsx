@@ -6,7 +6,10 @@ import { FoldersContext } from "../../../context";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { ShowFolderHistoryModal } from "@/Modules/Archivo/components";
+import {
+  ShowCheckSendModal,
+  ShowFolderHistoryModal,
+} from "@/Modules/Archivo/components";
 import { DetailsRow } from "./RowElements/DetailsRow";
 import { TextField } from "@mui/material";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
@@ -27,6 +30,7 @@ export const FoldersIndexTable = ({ tab }) => {
 
   //dataTable
   const [bulksRows, setBulksRows] = useState([]);
+  const [action, setAction] = useState(null);
   const [rows, setRows] = useState([]);
   const [staticRows, setStaticRows] = useState([]);
   const [row, setRow] = useState(null);
@@ -36,6 +40,8 @@ export const FoldersIndexTable = ({ tab }) => {
 
   //modals
   const [showHistoryModalFlag, setShowHistoryModalFlag] = useState(false);
+  const [showShowCheckSendModalFlag, setShowShowCheckSendModalFlag] =
+    useState(false);
 
   //alerts
   const [showAlertFlag, setShowAlertFlag] = useState(false);
@@ -51,11 +57,9 @@ export const FoldersIndexTable = ({ tab }) => {
     if (tab && folders) {
       //all folders
       if (tab === 1) {
-        const filteredFolders = folders.filter(function (folder) {
-          return folder.income_date !== null || folder.outcome_date !== null;
-        });
-        setRows(filteredFolders);
-        setStaticRows(filteredFolders);
+        
+        setRows(folders);
+        setStaticRows(folders);
       }
 
       //folders in file
@@ -71,15 +75,6 @@ export const FoldersIndexTable = ({ tab }) => {
       if (tab === 3) {
         const filteredFolders = folders.filter(function (folder) {
           return folder.income_date === null && folder.outcome_date !== null;
-        });
-        setRows(filteredFolders);
-        setStaticRows(filteredFolders);
-      }
-
-      //folders without state
-      if (tab === 4) {
-        const filteredFolders = folders.filter(function (folder) {
-          return folder.income_date === null && folder.outcome_date === null;
         });
         setRows(filteredFolders);
         setStaticRows(filteredFolders);
@@ -218,6 +213,22 @@ export const FoldersIndexTable = ({ tab }) => {
     setRow(null);
   };
 
+  // CheckSend
+
+  const handleOpenCheckSendModal = (action) => {
+    setAction(action);
+    setShowShowCheckSendModalFlag(true);
+  };
+
+  const handleCloseCheckSendModal = (clickClose = false) => {
+    setShowShowCheckSendModalFlag(false);
+    setAction(null);
+
+    if (!clickClose) {
+      movementFoldersHandler();
+    }
+  };
+
   // ============================================> table handlers
 
   const GeneralErrorsHeader = () => {
@@ -250,7 +261,7 @@ export const FoldersIndexTable = ({ tab }) => {
     setRows(filteredRows);
   };
 
-  const movementFoldersHandler = (action) => {
+  const movementFoldersHandler = () => {
     try {
       bulksRows.forEach(async (row) => {
         const date = dayjs()
@@ -304,9 +315,9 @@ export const FoldersIndexTable = ({ tab }) => {
               searchFilterChangeHandler={searchFilterChangeHandler}
               generalDetailsChangeHandler={generalDetailsChangeHandler}
               tab={tab}
-              movementFoldersHandler={movementFoldersHandler}
+              handleOpenCheckSendModal={handleOpenCheckSendModal}
               generalDetails={generalDetails}
-              // handleOpenShowModal={handleOpenShowModal}
+              action={action}
             />
           </div>
           {/* datatable */}
@@ -328,6 +339,14 @@ export const FoldersIndexTable = ({ tab }) => {
               row={row}
               open={showHistoryModalFlag}
               handleCloseShowModal={handleCloseShowHistoryModal}
+            />
+          </div>
+          <div className="bg-red-500">
+            <ShowCheckSendModal
+              open={showShowCheckSendModalFlag}
+              bulksRows={bulksRows}
+              handleCloseCheckSendModal={handleCloseCheckSendModal}
+              action={action}
             />
           </div>
         </div>

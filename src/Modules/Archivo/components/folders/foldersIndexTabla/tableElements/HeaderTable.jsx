@@ -13,7 +13,7 @@ export const HeaderTable = ({
   searchFilterChangeHandler,
   generalDetailsChangeHandler,
   tab,
-  movementFoldersHandler,
+  handleOpenCheckSendModal,
   generalDetails,
   // handleOpenShowModal,
 }) => {
@@ -54,7 +54,7 @@ export const HeaderTable = ({
             <div className="flex gap-x-5">
               {(tab === 3 || tab === 4) && (
                 <Button
-                  onClick={() => movementFoldersHandler("income")}
+                  onClick={() => handleOpenCheckSendModal("income")}
                   variant="outlined"
                 >
                   Entrada
@@ -62,7 +62,7 @@ export const HeaderTable = ({
               )}
               {(tab === 2 || tab === 4) && (
                 <Button
-                  onClick={() => movementFoldersHandler("outcome")}
+                  onClick={() => handleOpenCheckSendModal("outcome")}
                   variant="outlined"
                 >
                   Salida
