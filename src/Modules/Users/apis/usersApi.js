@@ -58,3 +58,17 @@ export const assignRolesApi = async (authTokens, data) => {
     return false;
   }
 };
+
+export const changePassswordApi = async (authTokens, id, data) => {
+  try {
+    return await updateElementBase(
+      authTokens,
+      `${endpointURL}/change-password`,
+      id,
+      data
+    );
+  } catch (error) {
+    // console.log(error);
+    return false;
+  }
+};

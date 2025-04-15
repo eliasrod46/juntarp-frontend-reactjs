@@ -52,7 +52,7 @@ export const HeaderTable = ({
         {hasSuperAdminArchivoAccess ? (
           <div className="my-5 flex flex-col items-center justify-center gap-y-1">
             <div className="flex gap-x-5">
-              {(tab === 3 || tab === 4) && (
+              {(tab === 3 || tab === 1) && (
                 <Button
                   onClick={() => handleOpenCheckSendModal("income")}
                   variant="outlined"
@@ -60,7 +60,7 @@ export const HeaderTable = ({
                   Entrada
                 </Button>
               )}
-              {(tab === 2 || tab === 4) && (
+              {(tab === 2 || tab === 1) && (
                 <Button
                   onClick={() => handleOpenCheckSendModal("outcome")}
                   variant="outlined"

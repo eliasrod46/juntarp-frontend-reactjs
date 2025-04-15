@@ -5,7 +5,8 @@ import {
   deleteElementApi,
   getElementsApi,
   updateElementApi,
-  assignRolesApi
+  assignRolesApi,
+  changePassswordApi,
 } from "@/Modules/Users/apis";
 
 export function useUsers() {
@@ -165,6 +166,48 @@ export function useUsers() {
     }
   }, []);
 
+  const changePasssword = useCallback(async (authTokens, id, data) => {
+    try {
+      const responseFromApi = await changePassswordApi(authTokens, id, data);
+
+      if (responseFromApi.message) {
+        if (typeof responseFromApi.message == "string") {
+          //global error
+          setErrors(responseFromApi.message);
+          return Promise.reject(responseFromApi.message); // Rechazamos la promesa con los errores
+        } else {
+          //validation errors
+          const sanitizedErrors = responseFromApi.message.reduce(
+            (acumulador, cadena) => {
+              const palabras = cadena.trim().split(/\s+/);
+              const primeraPalabra = palabras[0].toLowerCase();
+
+              if (!acumulador[primeraPalabra]) {
+                acumulador[primeraPalabra] = [];
+              }
+
+              acumulador[primeraPalabra].push(cadena);
+
+              return acumulador;
+            },
+            {}
+          );
+
+          setErrors(sanitizedErrors);
+          return Promise.reject(sanitizedErrors); // Rechazamos la promesa con los errores
+        }
+      } else {
+        setErrors([]); // Limpiamos errores si la actualización es exitosa
+        return Promise.resolve(); // Resolvemos la promesa si no hay errores
+      }
+    } catch (error) {
+      // ... (manejo de errores)
+      return Promise.reject(error); // Rechazamos la promesa en caso de error en la petición
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const clearErrors = async () => {
     setErrors([]);
   };
@@ -176,6 +219,7 @@ export function useUsers() {
     createElement,
     deleteElement,
     assignRoles,
+    changePasssword,
     errors,
     clearErrors,
     loading,

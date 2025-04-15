@@ -57,7 +57,6 @@ export const FoldersIndexTable = ({ tab }) => {
     if (tab && folders) {
       //all folders
       if (tab === 1) {
-        
         setRows(folders);
         setStaticRows(folders);
       }
@@ -326,7 +325,8 @@ export const FoldersIndexTable = ({ tab }) => {
               columns={columns}
               data={rows}
               pagination
-              {...(tab !== 1 && { selectableRows: true })}
+              // {...(tab !== 1 && { selectableRows: true })}
+              selectableRows={true}
               onSelectedRowsChange={({ selectedRows }) => {
                 setBulksRows(selectedRows);
               }}
