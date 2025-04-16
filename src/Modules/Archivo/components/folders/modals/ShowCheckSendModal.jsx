@@ -25,7 +25,7 @@ export const ShowCheckSendModal = ({
     return (
       <div className="my-5 ">
         <h2 className="text-center text-7xl font-bold text-gray-800">
-          Confrimar movimiento
+          Confirmar movimiento
         </h2>
 
         <p className="text-4xl w-10/12 mx-auto text-center font-bold">

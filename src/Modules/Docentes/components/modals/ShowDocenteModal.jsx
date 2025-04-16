@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import { DocentesContext } from "@/Modules/Docentes/context";
 import { InputErrors } from "@/Modules/Docentes/components";
 import { style } from "./StyleModals";
+import { GeneralAlert, InputError } from "@/components";
+import AuthContext from "@/Modules/Auth/context/AuthContext";
 
 export const ShowDocenteModal = ({
   row,
@@ -22,8 +24,16 @@ export const ShowDocenteModal = ({
     dni: "",
   };
 
-  const { getDocentes, updateDocente, createDocente, errors } =
-    useContext(DocentesContext);
+  const {
+    getDocentes,
+    updateDocente,
+    createDocente,
+    validationErrors,
+    generalError,
+  } = useContext(DocentesContext);
+
+  const { authTokens } = useContext(AuthContext);
+
   const [dataForm, setDataForm] = useState(dataFormBase);
 
   //when row recived, update dataForm
@@ -71,20 +81,20 @@ export const ShowDocenteModal = ({
       };
 
       if (row) {
-        await updateDocente(row.id, dataToSend);
+        await updateDocente(authTokens, row.id, dataToSend);
       } else {
-        await createDocente(dataToSend);
+        await createDocente(authTokens, dataToSend);
       }
 
       handleCloseShowModal();
     } catch (error) {
-      console.log("Errores desde contexto: ", error);
-      // Manejar los errores
-      setSeverity("error");
-      setAlertMessage("Ocurrio un error.");
-      setShowAlertFlag(true);
+      if (error && error.message) {
+        setSeverity("error");
+        setAlertMessage(`${error.message}`);
+        setShowAlertFlag(true);
+      }
     } finally {
-      getDocentes();
+      getDocentes(authTokens);
     }
   };
 
@@ -95,17 +105,6 @@ export const ShowDocenteModal = ({
         <h2 className="text-center text-2xl font-bold text-gray-800">
           {row ? "Ver" : "Crear"} Docente {row ? `: ${row.fullName}` : ""}
         </h2>
-      </div>
-    );
-  };
-  const GeneralErrorsHeader = () => {
-    return (
-      <div>
-        {typeof errors == "string" ? (
-          <span className="text-red-500 font-bold text-base">{errors}</span>
-        ) : (
-          ""
-        )}
       </div>
     );
   };
@@ -138,9 +137,6 @@ export const ShowDocenteModal = ({
         <div className="flex flex-col items-center justify-between h-full">
           {/* title */}
           <TitleModal />
-          {/* general errors header */}
-          <GeneralErrorsHeader />
-          {/* body */}
           {/* <BodyModal /> */}
           <div className="grid grid-cols-2 gap-10">
             {/* dni */}
@@ -157,7 +153,7 @@ export const ShowDocenteModal = ({
                 />
               </div>
               <div>
-                <InputErrors errors={errors.dni} />
+                <InputError validationErrors={validationErrors} value="dni" />
               </div>
             </div>
 
@@ -175,7 +171,10 @@ export const ShowDocenteModal = ({
                 />
               </div>
               <div>
-                <InputErrors errors={errors.lastname} />
+                <InputError
+                  validationErrors={validationErrors}
+                  value="lastname"
+                />
               </div>
             </div>
 
@@ -193,7 +192,7 @@ export const ShowDocenteModal = ({
                 />
               </div>
               <div>
-                <InputErrors errors={errors.name} />
+                <InputError validationErrors={validationErrors} value="name" />
               </div>
             </div>
           </div>

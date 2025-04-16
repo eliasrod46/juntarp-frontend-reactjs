@@ -11,7 +11,8 @@ export const UsersProvider = ({ children }) => {
     updateElement,
     assignRoles,
     changePasssword,
-    errors,
+    generalError,
+    validationErrors,
     clearErrors,
     loading,
   } = useUsers();
@@ -24,7 +25,8 @@ export const UsersProvider = ({ children }) => {
     deleteUser: deleteElement,
     assignRoles,
     changePasssword,
-    errors,
+    generalError,
+    validationErrors,
     clearErrors,
     loading,
   };

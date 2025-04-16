@@ -7,11 +7,14 @@ import {
   DeleteDocenteModal,
   ShowDocenteModal,
 } from "@/Modules/Docentes/components";
+import AuthContext from "@/Modules/Auth/context/AuthContext";
 
 export const DocentesIndexTable = () => {
   //context
   const { docentes, getDocentes, clearErrors, loading } =
     useContext(DocentesContext);
+
+  const { authTokens } = useContext(AuthContext);
   //dataTable
   const [rows, setRows] = useState([]);
   const [row, setRow] = useState(null);
@@ -27,7 +30,7 @@ export const DocentesIndexTable = () => {
 
   // get all docentes
   useEffect(() => {
-    getDocentes();
+    getDocentes(authTokens);
   }, []);
 
   // update rows state(when ciclos change)

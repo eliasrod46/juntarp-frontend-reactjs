@@ -1,6 +1,6 @@
 import { Alert, Button, Snackbar, TextField } from "@mui/material";
 import { useContext, useState } from "react";
-import { InputErrors } from "../components";
+// import { InputErrors } from "../components";
 import { UsersContext } from "@/Modules/Users/context";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -57,7 +57,7 @@ export function IndexProfile() {
       setAlertMessage(`Password cambiardo correctamente`);
       setShowAlertFlag(true);
       setTimeout(() => {
-        navigate('/inicio');
+        navigate("/inicio");
       }, 5000);
     } catch (error) {
       setSeverity("error");
@@ -93,9 +93,9 @@ export function IndexProfile() {
               }}
             />
           </div>
-          <div>
+          {/* <div>
             <InputErrors errors={errors.oldPassword} />
-          </div>
+          </div> */}
         </div>
         {/* newPassword */}
         <div>
@@ -112,9 +112,9 @@ export function IndexProfile() {
               }}
             />
           </div>
-          <div>
+          {/* <div>
             <InputErrors errors={errors.newPassword} />
-          </div>
+          </div> */}
         </div>
         {/* confirmPassword */}
         <div>
@@ -131,9 +131,9 @@ export function IndexProfile() {
               }}
             />
           </div>
-          <div>
+          {/* <div>
             <InputErrors errors={errors.confirmPassword} />
-          </div>
+          </div> */}
         </div>
         {/* boton */}
         <div>

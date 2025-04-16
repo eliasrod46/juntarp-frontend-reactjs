@@ -1,6 +1,6 @@
 import { Alert, Snackbar } from "@mui/material";
 
-export const AlertTable = ({
+export const GeneralAlert = ({
   severity,
   alertMessage,
   setOpen,

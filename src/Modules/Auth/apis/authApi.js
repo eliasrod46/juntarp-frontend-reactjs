@@ -1,24 +1,19 @@
+import axios from "../../../config/axiosConfig"; // Importa la instancia con el interceptor
 import { envs } from "../../../config";
 
-const baseURL = envs.apiServer.serverUrl; ///api
+const baseURL = envs.apiServer.serverUrl; // /api
 const endpointURL = `/auth`;
 
 export const loginApi = async (data) => {
   try {
-    const res = await fetch(`${baseURL}${endpointURL}/login`, {
-      method: "POST", // Usamos el método POST
+    const response = await axios.post(`${baseURL}${endpointURL}/login`, data, {
       headers: {
-        "Content-Type": "application/json", // Indicamos que enviamos datos en formato JSON
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data), // Convertimos los datos a formato JSON
     });
-    const resJson = await res.json();
-    
-    return resJson;
+    return response.data;
   } catch (error) {
-    //query to backend fail (TODO something)
-    console.log(error);
-    return { error: "generalApi" };
+    // El interceptor global ya ha formateado el error, así que simplemente lo re-lanzamos
+    throw error;
   }
 };
-// 'Authorization': `Bearer ${authTokens}`

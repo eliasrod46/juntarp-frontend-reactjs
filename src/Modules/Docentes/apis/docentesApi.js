@@ -3,40 +3,21 @@ import {getElementsBase,updateElementBase,createElementBase,deleteElementBase} f
 const endpointURL = `/docentes`;
 
 
-export const getDocentesApi = async () => {
-  try {
-    return await getElementsBase(endpointURL);
-  } catch (error) {
-    // console.log(error);
-    return false
-  }
+export const getElementsApi = async (authTokens) => {
+    
+  return await getElementsBase(authTokens,endpointURL);
 };
 
-export const updateDocenteApi = async (id, data) => {
-  try {
-    return await updateElementBase(endpointURL,id, data);
-  } catch (error) {
-    // console.log(error);
-    return false
-  }
+export const updateElementApi = async (authTokens,id, data) => {
+    return await updateElementBase(authTokens,endpointURL,id, data);
 };
 
-export const createDocenteApi = async (data) => {
-  try {
-    return await createElementBase(endpointURL,data)
-  } catch (error) {
-    // console.log(error);
-    return false;
-  }
+export const createElementApi = async (authTokens,data) => {
+    return await createElementBase(authTokens,endpointURL,data)
 };
 
-export const deleteDocenteApi = async (id) => {
-  try {
-    return await deleteElementBase(endpointURL,id);
-  } catch (error) {
-    // console.log(error);
-    return false;
-  }
+export const deleteElementApi = async (authTokens,id) => {
+    return await deleteElementBase(authTokens,endpointURL,id);
 };
 
 

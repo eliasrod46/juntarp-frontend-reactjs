@@ -9,7 +9,8 @@ export const FoldersProvider = ({ children }) => {
     createElement,
     deleteElement,
     updateElement,
-    errors,
+    generalError,
+    validationErrors,
     clearErrors,
     loading,
   } = useFolders();
@@ -20,7 +21,8 @@ export const FoldersProvider = ({ children }) => {
     updateFolder: updateElement,
     createFolder: createElement,
     deleteFolder: deleteElement,
-    errors,
+    generalError,
+    validationErrors,
     clearErrors,
     loading,
   }; // Objeto con el estado y la función

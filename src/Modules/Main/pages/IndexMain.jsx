@@ -61,6 +61,38 @@ export const IndexMain = () => {
               </div>
             </Link>
           </div>
+          {/* Docentes */}
+          <div>
+            <Link to="/docentes">
+              <div className="w-44 bg-gray-500 rounded-lg shadow-xl shadow-neutral-500 h-36 grid grid-cols-1">
+                <div className="w-16 m-auto">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <circle cx="12" cy="6" r="4" fill="#1C274C"></circle>{" "}
+                      <path
+                        d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
+                        fill="#1C274C"
+                      ></path>{" "}
+                    </g>
+                  </svg>
+                </div>
+                <div className="text-center text-xl m-auto">
+                  <span>Docentes</span>
+                </div>
+              </div>
+            </Link>
+          </div>
           {/* Configuracion */}
           <div>
             <Link to="/configuracion">
@@ -127,7 +159,7 @@ export const IndexMain = () => {
           </div>
         </CanAccess>
         {/* perfil */}
-        <CanAccess permissions={[SuperAdmin,Usuario]}>
+        <CanAccess permissions={[SuperAdmin, Usuario]}>
           <div>
             <Link to="/auth/profile">
               <div className="w-44 bg-gray-500 rounded-lg shadow-xl shadow-neutral-500 h-36 grid grid-cols-1">

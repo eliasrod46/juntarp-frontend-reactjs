@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useState } from "react";
 import { loginApi } from "../apis";
 import { Navigate } from "react-router-dom";
+import { envs } from "@/config";
 
 const AuthContext = createContext();
 
@@ -26,7 +27,8 @@ export const AuthProvider = ({ children }) => {
       return storedToken || null;
     }
   });
-  const [errors, setErrors] = useState();
+  const [generalError, setGeneralError] = useState();
+  const [validationErrors, setValidationErrors] = useState();
   const [loading, setLoading] = useState();
 
   // set states
@@ -42,47 +44,30 @@ export const AuthProvider = ({ children }) => {
 
   //functions
   const login = useCallback(async (data) => {
+    setLoading(true);
+    setGeneralError(null);
+    setValidationErrors(null);
     try {
       const responseFromApi = await loginApi(data);
 
-      if (responseFromApi.message) {
-        console.log("no debera ver esto");
-        console.log(responseFromApi);
-
-        if (typeof responseFromApi.message == "string") {
-          //global error
-          setErrors(responseFromApi.message);
-          return Promise.reject(responseFromApi.message); // Rechazamos la promesa con los errores
-        } else {
-          //validation errors
-          const sanitizedErrors = responseFromApi.message.reduce(
-            (acumulador, cadena) => {
-              const palabras = cadena.trim().split(/\s+/);
-              const primeraPalabra = palabras[0].toLowerCase();
-
-              if (!acumulador[primeraPalabra]) {
-                acumulador[primeraPalabra] = [];
-              }
-
-              acumulador[primeraPalabra].push(cadena);
-
-              return acumulador;
-            },
-            {}
-          );
-
-          setErrors(sanitizedErrors);
-          return Promise.reject(sanitizedErrors); // Rechazamos la promesa con los errores
-        }
-      } else {
-        setTokens(responseFromApi.token); // Almacena tokens en el contexto
-        setUser(responseFromApi.userData); // Almacena tokens en el contexto
-        setErrors([]); // Limpiamos errores si la actualización es exitosa
-        return Promise.resolve(); // Resolvemos la promesa si no hay errores
+      if (responseFromApi.token) {
+        setTokens(responseFromApi.token);
+        setUser(responseFromApi.userData);
+        return Promise.resolve();
       }
-    } catch (error) {
-      // ... (manejo de errores)
-      return Promise.reject(error); // Rechazamos la promesa en caso de error en la petición
+    } catch (catchError) {
+      const { message } = catchError;
+
+      if (message === "Errores de validación") {
+        setGeneralError(message);
+        setValidationErrors(catchError.validationErrors);
+      } else if (message) {
+        setGeneralError(message);
+      } else {
+        setGeneralError("Error desconocido al iniciar sesión.");
+      }
+
+      return Promise.reject(catchError);
     } finally {
       setLoading(false);
     }
@@ -93,9 +78,9 @@ export const AuthProvider = ({ children }) => {
     try {
       localStorage.removeItem("tokens");
       localStorage.removeItem("userData");
-      setErrors([]);
+      setGeneralError();
     } catch (error) {
-      // setErrors(error);
+      // setGeneralError(error);
     } finally {
       setLoading(false);
     }
@@ -123,7 +108,8 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         can,
-        errors,
+        generalError,
+        validationErrors,
         login,
         logout,
         loading,

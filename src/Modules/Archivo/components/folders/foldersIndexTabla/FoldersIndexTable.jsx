@@ -139,24 +139,20 @@ export const FoldersIndexTable = ({ tab }) => {
       name: "Detalles",
       cell: (row) => (
         <>
-          {tab && tab == 1 ? (
-            <p> {row.details} </p>
-          ) : (
-            <TextField
-              id={`details-${row.id}`}
-              label="Detalles"
-              variant="outlined"
-              value={rowDetails[row.id] || ""}
-              onChange={(e) => {
-                const newDetails = {
-                  ...rowDetails,
-                  [row.id]: e.target.value,
-                };
-                setRowDetails(newDetails);
-              }}
-              size="small"
-            />
-          )}
+          <TextField
+            id={`details-${row.id}`}
+            label="Detalles"
+            variant="outlined"
+            value={rowDetails[row.id] || ""}
+            onChange={(e) => {
+              const newDetails = {
+                ...rowDetails,
+                [row.id]: e.target.value,
+              };
+              setRowDetails(newDetails);
+            }}
+            size="small"
+          />
         </>
       ),
       ignoreRowClick: true,
@@ -165,24 +161,20 @@ export const FoldersIndexTable = ({ tab }) => {
       name: "Observaciones",
       cell: (row) => (
         <>
-          {tab && tab == 1 ? (
-            <p> {row.observations} </p>
-          ) : (
-            <TextField
-              id={`details-${row.id}`}
-              label="Observaciones"
-              variant="outlined"
-              value={rowObservations[row.id] || ""}
-              onChange={(e) => {
-                const newObservations = {
-                  ...rowObservations,
-                  [row.id]: e.target.value,
-                };
-                setRowObservations(newObservations);
-              }}
-              size="small"
-            />
-          )}
+          <TextField
+            id={`details-${row.id}`}
+            label="Observaciones"
+            variant="outlined"
+            value={rowObservations[row.id] || ""}
+            onChange={(e) => {
+              const newObservations = {
+                ...rowObservations,
+                [row.id]: e.target.value,
+              };
+              setRowObservations(newObservations);
+            }}
+            size="small"
+          />
         </>
       ),
       ignoreRowClick: true,
