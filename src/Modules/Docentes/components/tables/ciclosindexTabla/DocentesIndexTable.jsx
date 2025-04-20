@@ -3,11 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { AcctionRow, HeaderTable, AlertTable } from "./tableElements";
 import { DocentesContext } from "@/Modules/Docentes/context";
-import {
-  DeleteDocenteModal,
-  ShowDocenteModal,
-} from "@/Modules/Docentes/components";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
+import { GeneralModal } from "@/components";
+import { FormDeleteDocente } from "../../forms/FormDeleteDocente";
+import { FormDocente } from "../../forms/FormDocente";
 
 export const DocentesIndexTable = () => {
   //context
@@ -78,14 +77,9 @@ export const DocentesIndexTable = () => {
     setRow(row);
   };
 
-  const handleCloseShowModal = (clickClose = false) => {
+  const handleCloseShowModal = () => {
     setShowModalFlag(false);
     clearErrors();
-    if (!clickClose) {
-      setSeverity("success");
-      setAlertMessage(`Ciclo ${row ? "actualizado" : "creado"} con exito`);
-      setShowAlertFlag(true);
-    }
     setRow(null);
   };
 
@@ -145,22 +139,36 @@ export const DocentesIndexTable = () => {
           </div>
 
           {/* modals */}
-          <ShowDocenteModal
+
+          {/* show modal */}
+          <GeneralModal
             row={row}
             showModalFlag={showModalFlag}
             handleCloseShowModal={handleCloseShowModal}
-            setSeverity={setSeverity}
-            setAlertMessage={setAlertMessage}
-            setShowAlertFlag={setShowAlertFlag}
-          />
-          <DeleteDocenteModal
+          >
+            <FormDocente
+              row={row}
+              handleCloseShowModal={handleCloseShowModal}
+              setSeverity={setSeverity}
+              setAlertMessage={setAlertMessage}
+              setShowAlertFlag={setShowAlertFlag}
+            />
+          </GeneralModal>
+
+          <GeneralModal
             row={row}
-            deleteModalFlag={deleteModalFlag}
-            handleCloseDeleteModal={handleCloseDeleteModal}
-            setSeverity={setSeverity}
-            setAlertMessage={setAlertMessage}
-            setShowAlertFlag={setShowAlertFlag}
-          />
+            showModalFlag={deleteModalFlag}
+            handleCloseShowModal={handleCloseDeleteModal}
+            toDelete={true}
+          >
+            <FormDeleteDocente
+              row={row}
+              handleCloseShowModal={handleCloseDeleteModal}
+              setSeverity={setSeverity}
+              setAlertMessage={setAlertMessage}
+              setShowAlertFlag={setShowAlertFlag}
+            />
+          </GeneralModal>
         </div>
       )}
     </div>

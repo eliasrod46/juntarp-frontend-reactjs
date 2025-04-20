@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FoldersIndexTable } from "../components";
+import { FoldersIndexTable } from "../components/folders/foldersIndexTabla/FoldersIndexTable";
 
 export const IndexFolders = () => {
   const tabActivaClass =

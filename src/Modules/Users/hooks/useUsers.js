@@ -8,13 +8,13 @@ import {
   assignRolesApi,
   changePassswordApi,
 } from "@/Modules/Users/apis";
+import { generalErrorsHandler } from "@/config/generalErrorsHandler";
 
 export function useUsers() {
   const [elements, setElements] = useState();
   const [generalError, setGeneralError] = useState();
   const [validationErrors, setValidationErrors] = useState();
   const [loading, setLoading] = useState(true);
-
 
   const getElements = useCallback(async (authTokens) => {
     setLoading(true);
@@ -25,14 +25,11 @@ export function useUsers() {
       setElements(responseFromApi || []);
       return Promise.resolve();
     } catch (catchError) {
-      
-      const { message } = catchError;
-
-      if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false); // Establecer loading a false DESPUÉS de la llamada a la API
     }
@@ -44,19 +41,13 @@ export function useUsers() {
     setValidationErrors(null);
     try {
       await updateElementApi(authTokens, id, data);
-      return Promise.resolve()
+      return Promise.resolve();
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -67,22 +58,14 @@ export function useUsers() {
     setGeneralError(null);
     setValidationErrors(null);
     try {
-      
       await createElementApi(authTokens, data);
       return Promise.resolve();
     } catch (catchError) {
-      
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -94,13 +77,11 @@ export function useUsers() {
     try {
       await deleteElementApi(authTokens, id);
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -115,19 +96,12 @@ export function useUsers() {
     try {
       await assignRolesApi(authTokens, data);
       return Promise.resolve();
-      
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -140,23 +114,17 @@ export function useUsers() {
     try {
       await changePassswordApi(authTokens, id, data);
 
-      return Promise.resolve()
+      return Promise.resolve();
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
       return Promise.reject(catchError);
     } finally {
       setLoading(false);
-    }    
-
+    }
   }, []);
 
   return {
@@ -167,7 +135,8 @@ export function useUsers() {
     deleteElement,
     assignRoles,
     changePasssword,
-    errors,
+    generalError,
+    validationErrors,
     clearErrors,
     loading,
   };

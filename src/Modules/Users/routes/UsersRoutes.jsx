@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router";
 import { IndexUsers } from "@/Modules/Users/pages";
 import { UsersProvider } from "@/Modules/Users/context";
 import { RolesProvider } from "@/Modules/ConfigModule/context";
+import { IndexProfile } from "../pages/IndexProfile";
 
 export const UsersRoutes = () => {
   return (
@@ -9,6 +10,7 @@ export const UsersRoutes = () => {
       <UsersProvider>
         <Routes>
           <Route path="/" element={<IndexUsers />} />
+          <Route path="/profile" element={<IndexProfile />} />
         </Routes>
       </UsersProvider>
     </RolesProvider>

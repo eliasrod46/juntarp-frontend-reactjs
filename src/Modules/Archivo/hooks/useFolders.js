@@ -6,6 +6,7 @@ import {
   getElementsIngresoApi,
   updateElementApi,
 } from "../apis/foldersApi";
+import { generalErrorsHandler } from "@/config/generalErrorsHandler";
 
 export function useFolders() {
   const [elements, setElements] = useState();
@@ -22,13 +23,11 @@ export function useFolders() {
       setElements(responseFromApi || []);
       return Promise.resolve(); // Resolvemos la promesa si no hay errores
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false); // Establecer loading a false DESPUÉS de la llamada a la API
     }
@@ -42,17 +41,11 @@ export function useFolders() {
       await updateElementApi(authTokens, id, data);
       return Promise.resolve();
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -66,17 +59,11 @@ export function useFolders() {
       await createElementApi(authTokens, data);
       return Promise.resolve();
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -88,13 +75,11 @@ export function useFolders() {
     try {
       await deleteElementApi(authTokens, id);
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }

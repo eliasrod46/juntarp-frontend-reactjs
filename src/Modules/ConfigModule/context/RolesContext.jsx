@@ -9,7 +9,8 @@ export const RolesProvider = ({ children }) => {
     createElement,
     deleteElement,
     updateElement,
-    errors,
+    generalError,
+    validationErrors,
     clearErrors,
     loading,
   } = useRoles();
@@ -20,10 +21,11 @@ export const RolesProvider = ({ children }) => {
     updateRole: updateElement,
     createRole: createElement,
     deleteRole: deleteElement,
-    errors,
+    generalError,
+    validationErrors,
     clearErrors,
     loading,
-  }; // Objeto con el estado y la función
+  };
 
   return (
     <RolesContext.Provider value={value}>{children}</RolesContext.Provider>

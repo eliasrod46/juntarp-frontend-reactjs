@@ -1,6 +1,6 @@
 //modals
-export * from "./modals/DeleteDocenteModal";
-export * from "./modals/ShowDocenteModal";
+export * from "./forms/FormDeleteDocente";
+// export * from "./modals/ShowDocenteModal";
 
 //tables
 export * from "./tables/ciclosindexTabla/DocentesIndexTable";

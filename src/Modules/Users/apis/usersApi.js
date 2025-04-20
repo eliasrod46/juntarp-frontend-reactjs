@@ -5,6 +5,10 @@ import {
   deleteElementBase,
 } from "../../../apis/generalApi";
 
+/*
+add add endpint api to base endpoints
+*/
+
 const endpointURL = `/user`;
 
 export const getElementsApi = async (authTokens) => {

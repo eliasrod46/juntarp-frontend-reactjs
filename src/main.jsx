@@ -41,6 +41,7 @@ createRoot(document.getElementById("root")).render(
               <Route path="archivo/*" element={<ArchivoRoutes />} />
               <Route path="turnos/*" element={<TurnosRoutes />} />
               <Route path="configuracion/*" element={<ConfigRoutes />} />
+              <Route path="configuracion/*" element={<ConfigRoutes />} />
             </Route>
           </Route>
         </Routes>

@@ -10,9 +10,7 @@ export const AuthRoutes = () => {
       <Routes>
         {/* <Route path="/register" element={<IndexRegister />} /> */}
         <Route path="/login" element={<LoginMiddleware />} />
-        <Route element={<ProtectedAuthRoute />}>
-          <Route path="/profile" element={<IndexProfile />} />
-        </Route>
+        <Route element={<ProtectedAuthRoute />}></Route>
       </Routes>
     </UsersProvider>
   );

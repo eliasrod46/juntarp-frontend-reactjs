@@ -161,7 +161,7 @@ export const IndexMain = () => {
         {/* perfil */}
         <CanAccess permissions={[SuperAdmin, Usuario]}>
           <div>
-            <Link to="/auth/profile">
+            <Link to="/usuarios/profile">
               <div className="w-44 bg-gray-500 rounded-lg shadow-xl shadow-neutral-500 h-36 grid grid-cols-1">
                 <div className="w-16 m-auto">
                   <svg

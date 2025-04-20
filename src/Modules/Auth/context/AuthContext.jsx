@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useState } from "react";
 import { loginApi } from "../apis";
 import { Navigate } from "react-router-dom";
 import { envs } from "@/config";
+import { generalErrorsHandler } from "@/config/generalErrorsHandler";
 
 const AuthContext = createContext();
 
@@ -56,18 +57,11 @@ export const AuthProvider = ({ children }) => {
         return Promise.resolve();
       }
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }

@@ -3,7 +3,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { Box, Modal } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { CiclosContext } from "@/Modules/Ciclos/context";
 import { InputErrors } from "@/Modules/Ciclos/components";
 import { style } from "../StyleModals";
 import { RolesContext } from "@/Modules/ConfigModule/context";
@@ -18,9 +17,9 @@ export const ShowRolModal = ({
   setShowAlertFlag,
 }) => {
   // structure dataForm
-  const dataFormBase = {
-    name: "",
-  };
+  // const dataFormBase = {
+  //   name: "",
+  // };
 
   const { getRoles, updateRole, createRole, errors } = useContext(RolesContext);
   const { authTokens } = useContext(AuthContext);

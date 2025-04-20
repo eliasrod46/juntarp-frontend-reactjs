@@ -2,17 +2,22 @@
 import { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { AcctionRow, HeaderTable, AlertTable } from "./tableElements";
-import { FoldersContext } from "../../../context";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import {
-  ShowCheckSendModal,
-  ShowFolderHistoryModal,
-} from "@/Modules/Archivo/components";
+// import {
+//   ShowCheckSendModal,
+//   ShowFolderHistoryModal,
+// } from "@/Modules/Archivo/components";
 import { DetailsRow } from "./RowElements/DetailsRow";
 import { TextField } from "@mui/material";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
+import { GeneralModal } from "@/components";
+import { FoldersContext } from "@/Modules/Archivo/context";
+import { EditButton } from "./RowElements/EditButton";
+import { FolderHistoryTable } from "../../tables/FolderHistoryTable";
+import { ConfirmSendForm } from "../../forms/ConfirmSendForm";
+import { FormFolder } from "../../forms/FormFolder";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -39,6 +44,7 @@ export const FoldersIndexTable = ({ tab }) => {
   const [rowObservations, setRowObservations] = useState({});
 
   //modals
+  const [showFolderModalFlag, setShowFolderModalFlag] = useState(false);
   const [showHistoryModalFlag, setShowHistoryModalFlag] = useState(false);
   const [showShowCheckSendModalFlag, setShowShowCheckSendModalFlag] =
     useState(false);
@@ -189,9 +195,30 @@ export const FoldersIndexTable = ({ tab }) => {
       ),
       ignoreRowClick: true,
     },
+    {
+      name: "Editar",
+      cell: (row) => (
+        <EditButton
+          row={row}
+          handleOpenShowFolderModal={handleOpenShowFolderModal}
+        />
+      ),
+      ignoreRowClick: true,
+    },
   ];
 
   // ============================================> modals handlers
+
+  // ShowFolder
+  const handleOpenShowFolderModal = (row = null) => {
+    setShowFolderModalFlag(true);
+    setRow(row);
+  };
+
+  const handleCloseShowFolderModal = () => {
+    setShowFolderModalFlag(false);
+    setRow(null);
+  };
 
   // ShowHistory
   const handleOpenShowHistoryModal = (row = null) => {
@@ -259,19 +286,21 @@ export const FoldersIndexTable = ({ tab }) => {
           .tz("America/Argentina/Buenos_Aires")
           .format("YYYY-MM-DD");
 
-        const observation = rowObservations[row.id];
-        const details = rowDetails[row.id];
-
-        const dataToSend = {
-          details: details ? details : generalDetails ? generalDetails : null,
-          observations: observation ? observation : null,
-          docenteId: row.docente.id,
-          outcome_date: action === "outcome" ? date : null,
-          income_date: action === "income" ? date : null,
-        };
-        // console.log(dataToSend);
-
-        await updateFolder(authTokens, row.id, dataToSend);
+        if (
+          (row.income_date && action === "outcome") ||
+          (row.outcome_date && action === "income")
+        ) {
+          const observation = rowObservations[row.id];
+          const details = rowDetails[row.id];
+          const dataToSend = {
+            details: details ? details : generalDetails ? generalDetails : null,
+            observations: observation ? observation : null,
+            docenteId: row.docente.id,
+            outcome_date: action === "outcome" ? date : null,
+            income_date: action === "income" ? date : null,
+          };
+          await updateFolder(authTokens, row.id, dataToSend);
+        }
       });
 
       getFoldersIngreso(authTokens);
@@ -326,21 +355,43 @@ export const FoldersIndexTable = ({ tab }) => {
           </div>
 
           {/* modals */}
-          <div className="bg-red-500">
-            <ShowFolderHistoryModal
+          {/* showFoler */}
+          <GeneralModal
+            row={row}
+            showModalFlag={showFolderModalFlag}
+            handleCloseShowModal={handleCloseShowFolderModal}
+          >
+            <FormFolder
               row={row}
-              open={showHistoryModalFlag}
-              handleCloseShowModal={handleCloseShowHistoryModal}
+              handleCloseShowModal={handleCloseShowFolderModal}
+              setSeverity={setSeverity}
+              setAlertMessage={setAlertMessage}
+              setShowAlertFlag={setShowAlertFlag}
             />
-          </div>
-          <div className="bg-red-500">
-            <ShowCheckSendModal
-              open={showShowCheckSendModalFlag}
+          </GeneralModal>
+          {/* showHistoryFoler */}
+          <GeneralModal
+            row={row}
+            showModalFlag={showHistoryModalFlag}
+            handleCloseShowModal={handleCloseShowHistoryModal}
+            title="Historial"
+          >
+            <FolderHistoryTable row={row} />
+          </GeneralModal>
+
+          {/* checksendmodal */}
+          <GeneralModal
+            row={row}
+            showModalFlag={showShowCheckSendModalFlag}
+            handleCloseShowModal={handleCloseCheckSendModal}
+            title="Confirma movimiento"
+          >
+            <ConfirmSendForm
+              handleCloseShowModal={handleCloseCheckSendModal}
               bulksRows={bulksRows}
-              handleCloseCheckSendModal={handleCloseCheckSendModal}
               action={action}
             />
-          </div>
+          </GeneralModal>
         </div>
       )}
     </div>

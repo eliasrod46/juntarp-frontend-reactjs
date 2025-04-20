@@ -1,14 +1,12 @@
 //componente (tabla)
 import { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
-import { AcctionRow, HeaderTable, AlertTable } from "./tableElements";
-import {
-  DeleteDocenteModal,
-  ShowDocenteModal,
-} from "@/Modules/Docentes/components";
+import { AcctionRow, HeaderTable } from "./tableElements";
 import { UsersContext } from "@/Modules/Users/context";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
-import { LinkRolesModal, ShowUserModal } from "../..";
+import { AlertBox, GeneralModal } from "@/components";
+import { FormUser, LinkRolesForm } from "../";
+import { FormDeleteUser } from "../forms/FormDeleteUser";
 
 export const UsersIndexTable = () => {
   //context
@@ -21,11 +19,12 @@ export const UsersIndexTable = () => {
   // //modals
   const [showModalFlag, setShowModalFlag] = useState(false);
   const [openLinkRolesModalFlag, setOpenLinkRolesModalFlag] = useState(false);
+  const [deleteModalFlag, setDeleteModalFlag] = useState(false);
 
   //alerts
-  const [showAlertFlag, setShowAlertFlag] = useState(false);
-  const [severity, setSeverity] = useState("success");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlertFlagTable, setShowAlertFlagTable] = useState(false);
+  const [severityTable, setSeverityTable] = useState("success");
+  const [alertMessageTable, setAlertMessageTable] = useState("");
 
   // get all docentes
   useEffect(() => {
@@ -93,6 +92,7 @@ export const UsersIndexTable = () => {
           row={row}
           handleOpenShowModal={handleOpenShowModal}
           handleOpenLinkRolesModal={handleOpenLinkRolesModal}
+          handleOpenDeleteModal={handleOpenDeleteModal}
         />
       ),
       ignoreRowClick: true,
@@ -101,50 +101,42 @@ export const UsersIndexTable = () => {
 
   // ============================================> modals handlers
 
-  // // showModal
+  // showModal
   const handleOpenShowModal = (row = null) => {
     setShowModalFlag(true);
     setRow(row);
   };
 
-  const handleCloseShowModal = (clickClose = false) => {
+  const handleCloseShowModal = () => {
     setShowModalFlag(false);
     clearErrors();
-    if (!clickClose) {
-      setSeverity("success");
-      setAlertMessage(`Ciclo ${row ? "actualizado" : "creado"} con exito`);
-      setShowAlertFlag(true);
-    }
     setRow(null);
   };
 
-  // deleteModal
+  // link roles modal
   const handleOpenLinkRolesModal = (row) => {
     setOpenLinkRolesModalFlag(true);
     setRow(row);
   };
 
-  const handleCloseLinkRolesModal = (clickClose = false) => {
+  const handleCloseLinkRolesModal = () => {
     setOpenLinkRolesModalFlag(false);
     clearErrors();
-    if (!clickClose) {
-      setSeverity("success");
-      setAlertMessage(`Roles actualizados`);
-      setShowAlertFlag(true);
-    }
     setRow(null);
   };
 
-  // const handleCloseDeleteModal = (clickClose = false) => {
-  //   setDeleteModalFlag(false);
-  //   clearErrors();
-  //   if (!clickClose) {
-  //     setSeverity("success");
-  //     setAlertMessage(`Docente eliminado con exito`);
-  //     setShowAlertFlag(true);
-  //   }
-  //   setRow(null);
-  // };
+  // deleteModal
+
+  const handleOpenDeleteModal = (row) => {
+    setDeleteModalFlag(true);
+    setRow(row);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setDeleteModalFlag(false);
+    clearErrors();
+    setRow(null);
+  };
 
   // ============================================> table handlers
   const searchFilterChangeHandler = (e) => {
@@ -169,11 +161,11 @@ export const UsersIndexTable = () => {
       ) : (
         <div>
           {/* alert seccion */}
-          <AlertTable
-            severity={severity}
-            alertMessage={alertMessage}
-            setOpen={setShowAlertFlag}
-            open={showAlertFlag}
+          <AlertBox
+            severity={severityTable}
+            alertMessage={alertMessageTable}
+            setOpen={setShowAlertFlagTable}
+            open={showAlertFlagTable}
           />
           {/* header table */}
           <HeaderTable
@@ -186,22 +178,50 @@ export const UsersIndexTable = () => {
           </div>
 
           {/* modals */}
-          <ShowUserModal
+          {/* show modal */}
+          <GeneralModal
             row={row}
             showModalFlag={showModalFlag}
             handleCloseShowModal={handleCloseShowModal}
-            setSeverity={setSeverity}
-            setAlertMessage={setAlertMessage}
-            setShowAlertFlag={setShowAlertFlag}
-          />
-          <LinkRolesModal
+          >
+            <FormUser
+              row={row}
+              handleCloseShowModal={handleCloseShowModal}
+              setSeverity={setSeverityTable}
+              setAlertMessage={setAlertMessageTable}
+              setShowAlertFlag={setShowAlertFlagTable}
+            />
+          </GeneralModal>
+          {/* link roles modal */}
+          <GeneralModal
             row={row}
-            openLinkRolesModalFlag={openLinkRolesModalFlag}
-            handleCloseLinkRolesModal={handleCloseLinkRolesModal}
-            setSeverity={setSeverity}
-            setAlertMessage={setAlertMessage}
-            setShowAlertFlag={setShowAlertFlag}
-          />
+            showModalFlag={openLinkRolesModalFlag}
+            handleCloseShowModal={handleCloseLinkRolesModal}
+            title="Asignar Roles"
+          >
+            <LinkRolesForm
+              row={row}
+              handleCloseShowModal={handleCloseLinkRolesModal}
+              setSeverity={setSeverityTable}
+              setAlertMessage={setAlertMessageTable}
+              setShowAlertFlag={setShowAlertFlagTable}
+            />
+          </GeneralModal>
+          {/* delete modal */}
+          <GeneralModal
+            row={row}
+            showModalFlag={deleteModalFlag}
+            handleCloseShowModal={handleCloseDeleteModal}
+            toDelete={true}
+          >
+            <FormDeleteUser
+              row={row}
+              handleCloseShowModal={handleCloseDeleteModal}
+              setSeverity={setSeverityTable}
+              setAlertMessage={setAlertMessageTable}
+              setShowAlertFlag={setShowAlertFlagTable}
+            />
+          </GeneralModal>
         </div>
       )}
     </div>

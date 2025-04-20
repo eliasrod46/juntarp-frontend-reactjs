@@ -25,14 +25,18 @@ axios.interceptors.response.use(
 
         // if is a class-validator erros: (statusCode 400 & message as array)
         if (data.statusCode === 400 && Array.isArray(data.message)) {
-          formattedError.message = "Errores de validación"; 
+          formattedError.message = "Errores de validación";
           formattedError.validationErrors = {};
           data.message.forEach((error) => {
-            const primeraPalabra = error.split(" ")[0];
-            if (!formattedError.validationErrors[primeraPalabra]) {
-              formattedError.validationErrors[primeraPalabra] = [];
+            const partesDelError = error.split(" ");
+            // La primera palabra es el nombre del campo, el resto es el mensaje
+            const nombreCampo = partesDelError[0];
+            const mensajeError = partesDelError.slice(1).join(" "); // Unimos el resto de las palabras
+        
+            if (!formattedError.validationErrors[nombreCampo]) {
+              formattedError.validationErrors[nombreCampo] = [];
             }
-            formattedError.validationErrors[primeraPalabra].push(error);
+            formattedError.validationErrors[nombreCampo].push(mensajeError); // Usamos solo el mensaje
           });
         }
 

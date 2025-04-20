@@ -6,38 +6,18 @@ import {
 } from "../../../apis/generalApi";
 
 const endpointURL = `/roles`;
-export const getElementsIngresoApi = async (authTokens) => {
-  try {
-    return await getElementsBase(authTokens, `${endpointURL}`);
-  } catch (error) {
-    // console.log(error);
-    return false;
-  }
+export const getElementsApi = async (authTokens) => {
+  return await getElementsBase(authTokens, `${endpointURL}`);
 };
 
 export const updateElementApi = async (authTokens, id, data) => {
-  try {
-    return await updateElementBase(authTokens, endpointURL, id, data);
-  } catch (error) {
-    // console.log(error);
-    return false;
-  }
+  return await updateElementBase(authTokens, endpointURL, id, data);
 };
 
 export const createElementApi = async (authTokens, data) => {
-  try {
-    return await createElementBase(authTokens, endpointURL, data);
-  } catch (error) {
-    // console.log(error);
-    return false;
-  }
+  return await createElementBase(authTokens, endpointURL, data);
 };
 
 export const deleteElementApi = async (authTokens, id) => {
-  try {
-    return await deleteElementBase(authTokens, endpointURL, id);
-  } catch (error) {
-    // console.log(error);
-    return false;
-  }
+  return await deleteElementBase(authTokens, endpointURL, id);
 };

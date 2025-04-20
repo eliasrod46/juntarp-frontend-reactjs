@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
 import { InputLogin } from "..";
-import { GeneralAlert } from "@/components";
+import { GeneralAlert, PasswordIcon, UserIcon } from "@/components";
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   //contexts
-  const { login, generalError, validationErrors } = useContext(AuthContext);
+  const { login, validationErrors } = useContext(AuthContext);
   //alerts
   const [showAlertFlag, setShowAlertFlag] = useState(false);
   const [severity, setSeverity] = useState("success");
@@ -42,7 +42,7 @@ export function LoginForm() {
         open={showAlertFlag}
       />
       <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow dark:bg-gray-800 sm:px-6 md:px-8 lg:px-10">
-        <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl dark:text-white">
+        <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-4xl dark:text-white">
           Iniciar Sesion
         </div>
         <div>
@@ -54,6 +54,9 @@ export function LoginForm() {
                   setItem={setEmail}
                   item={email}
                   value="email"
+                  label="Usuario"
+                  type="text"
+                  icon={<UserIcon />}
                   validationErrors={validationErrors}
                 />
               </div>
@@ -63,6 +66,9 @@ export function LoginForm() {
                   setItem={setPassword}
                   item={password}
                   value="password"
+                  label="Password"
+                  type="password"
+                  icon={<PasswordIcon />}
                   validationErrors={validationErrors}
                 />
               </div>

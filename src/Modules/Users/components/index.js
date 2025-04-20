@@ -1,9 +1,6 @@
 //modals
-export * from "./modals/LinkRolesModal";
-export * from "./modals/ShowUserModal";
+export * from "./forms/FormUser";
+export * from "./forms/LinkRolesForm";
 
 //tables
-export * from "./tables/usersIndexTabla/UsersIndexTable";
-
-//components
-export * from "./InputErrors";
+export * from "./tables/UsersIndexTable";

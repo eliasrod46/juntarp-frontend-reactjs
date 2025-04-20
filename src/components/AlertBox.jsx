@@ -1,11 +1,11 @@
 import { Alert, Snackbar } from "@mui/material";
 
-export const AlertTable = ({
+export const AlertBox = ({
   severity,
   alertMessage,
   setOpen,
   open,
-  duration = 3000,
+  duration = 5000,
 }) => {
   return (
     <Snackbar

@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { useFolders } from "../hooks";
+import { useFolders } from "../hooks/useFolders";
 export const FoldersContext = createContext();
 
 export const FoldersProvider = ({ children }) => {

@@ -7,6 +7,7 @@ import {
   getElementsApi,
   updateElementApi,
 } from "../apis/docentesApi";
+import { generalErrorsHandler } from "@/config/generalErrorsHandler";
 
 export function useDocentes() {
   const [elements, setElements] = useState();
@@ -23,14 +24,11 @@ export function useDocentes() {
       setElements(responseFromApi || []);
       return Promise.resolve();
     } catch (catchError) {
-      
-      const { message } = catchError;
-
-      if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false); // Establecer loading a false DESPUÉS de la llamada a la API
     }
@@ -42,20 +40,13 @@ export function useDocentes() {
     setValidationErrors(null);
     try {
       await updateElementApi(authTokens, id, data);
-      return Promise.resolve()
-
+      return Promise.resolve();
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -66,22 +57,14 @@ export function useDocentes() {
     setGeneralError(null);
     setValidationErrors(null);
     try {
-      
       await createElementApi(authTokens, data);
       return Promise.resolve();
     } catch (catchError) {
-      
-      const { message } = catchError;
-
-      if (message === "Errores de validación") {
-        setGeneralError(message);
-        setValidationErrors(catchError.validationErrors);
-      } else if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
-      return Promise.reject(catchError);
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }
@@ -92,15 +75,12 @@ export function useDocentes() {
     setGeneralError(null);
     try {
       await deleteElementApi(authTokens, id);
-      
     } catch (catchError) {
-      const { message } = catchError;
-
-      if (message) {
-        setGeneralError(message);
-      } else {
-        setGeneralError("Error desconocido al iniciar sesión.");
-      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
     } finally {
       setLoading(false);
     }

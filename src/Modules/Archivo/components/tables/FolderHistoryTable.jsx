@@ -1,22 +1,9 @@
 //modal
 import React, { useEffect, useState, useContext } from "react";
-import { Box, InputLabel, MenuItem, Modal, Select } from "@mui/material";
-import { CustomSelect } from "@/components/CustomSelect";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { TurnosContext, TurnosTypesContext } from "@/Modules/Turnos/context";
-import { CiclosContext } from "@/Modules/Ciclos/context";
-import { DocentesContext } from "@/Modules/Docentes/context";
-import { InputErrors } from "@/Modules/Docentes/components";
-import { style } from "./StyleModals";
 import dayjs from "dayjs";
 import DataTable from "react-data-table-component";
 
-export const ShowFolderHistoryModal = ({
-  row,
-  open, // Esta prop contiene el estado de visibilidad
-  handleCloseShowModal,
-}) => {
+export const FolderHistoryTable = ({ row }) => {
   // structures
   const [history, serHistory] = useState([]);
   const columns = [
@@ -66,6 +53,19 @@ export const ShowFolderHistoryModal = ({
         return row.observations;
       },
     },
+
+    {
+      name: "Estado",
+      selector: (row) => {
+        return row.state;
+      },
+    },
+    {
+      name: "Ubicacion",
+      selector: (row) => {
+        return row.location;
+      },
+    },
     {
       name: "Usuario",
       selector: (row) => {
@@ -75,7 +75,11 @@ export const ShowFolderHistoryModal = ({
   ];
   useEffect(() => {
     if (row) {
-      serHistory(row.history);
+      const history = row.history;
+      // order array newest first
+      history.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+      serHistory(history);
     }
   }, [row]);
 
@@ -90,48 +94,22 @@ export const ShowFolderHistoryModal = ({
     );
   };
 
-  const ButtonsModal = () => {
-    return (
-      <div className="mt-10">
-        <Button
-          onClick={() => handleCloseShowModal(true)}
-          variant="contained"
-          color="error"
-        >
-          Cerrar
-        </Button>
-      </div>
-    );
-  };
-
   return (
-    <Modal
-      open={open}
-      onClose={handleCloseShowModal} // close on click out of modal
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box sx={style}>
-        <div className="flex flex-col items-center justify-between h-full">
-          {/* title */}
-          <TitleModal className="w-full" />
-          {/* body */}
-          {/* <BodyModal /> */}
-          <div className="w-full">
-            {/* datatable */}
-            <div className="rounded-t-xl">
-              <DataTable
-                className="w-11/12"
-                columns={columns}
-                data={history}
-                pagination
-              />
-            </div>
-          </div>
-          {/* buttons */}
-          <ButtonsModal />
+    <div className="">
+      {/* title */}
+      <TitleModal className="w-full" />
+      {/* body */}
+      <div className="w-full">
+        {/* datatable */}
+        <div className="rounded-t-xl">
+          <DataTable
+            className="w-11/12"
+            columns={columns}
+            data={history}
+            pagination
+          />
         </div>
-      </Box>
-    </Modal>
+      </div>
+    </div>
   );
 };

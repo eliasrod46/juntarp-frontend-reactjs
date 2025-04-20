@@ -1,3 +1,3 @@
 export * from "./IndexRegister";
 export * from "./IndexLogin";
-export * from "./IndexProfile";
+export * from "../../Users/pages/IndexProfile";

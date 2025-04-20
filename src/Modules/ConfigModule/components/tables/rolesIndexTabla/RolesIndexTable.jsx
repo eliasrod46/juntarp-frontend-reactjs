@@ -2,12 +2,11 @@
 import { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { AcctionRow, HeaderTable, AlertTable } from "./tableElements";
-import { CiclosContext } from "@/Modules/Ciclos/context";
-import { ShowCicloModal } from "@/Modules/Ciclos/components";
-import dayjs from "dayjs";
 import { RolesContext } from "@/Modules/ConfigModule/context";
-import { ShowRolModal } from "../..";
+// import { ShowRolModal } from "../..";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
+import { AlertBox, GeneralModal } from "@/components";
+import { FormRole } from "../../forms/FormRole";
 
 export const RolesIndexTable = () => {
   //context
@@ -19,13 +18,13 @@ export const RolesIndexTable = () => {
   const [row, setRow] = useState(null);
 
   // //modals
-  const [showModalFlag, setShowModalFlag] = useState(false);
+  const [showRoleModalFlag, setShowRoleModalFlag] = useState(false);
   // const [deleteModalFlag, setDeleteModalFlag] = useState(false);
 
   //alerts
-  const [showAlertFlag, setShowAlertFlag] = useState(false);
-  const [severity, setSeverity] = useState("success");
-  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlertFlagTable, setShowAlertFlagTable] = useState(false);
+  const [severityTable, setSeverityTable] = useState("success");
+  const [alertMessageTable, setAlertMessageTable] = useState("");
 
   // get all docentes
   useEffect(() => {
@@ -51,7 +50,7 @@ export const RolesIndexTable = () => {
       cell: (row) => (
         <AcctionRow
           row={row}
-          handleOpenShowModal={handleOpenShowModal}
+          handleOpenShowModal={handleOpenShowRoleModal}
           // handleOpenDeleteModal={handleOpenDeleteModal}
         />
       ),
@@ -62,18 +61,18 @@ export const RolesIndexTable = () => {
   // ============================================> modals handlers
 
   // showModal
-  const handleOpenShowModal = (row = null) => {
-    setShowModalFlag(true);
+  const handleOpenShowRoleModal = (row = null) => {
+    setShowRoleModalFlag(true);
     setRow(row);
   };
 
-  const handleCloseShowModal = (clickClose = false) => {
-    setShowModalFlag(false);
+  const handleCloseShowRoleModal = (clickClose = false) => {
+    setShowRoleModalFlag(false);
     clearErrors();
     if (!clickClose) {
-      setSeverity("success");
-      setAlertMessage(`Ciclo ${row ? "actualizado" : "creado"} con exito`);
-      setShowAlertFlag(true);
+      setSeverityTable("success");
+      setAlertMessageTable(`Rol ${row ? "actualizado" : "creado"} con exito`);
+      setShowAlertFlagTable(true);
     }
     setRow(null);
   };
@@ -115,18 +114,17 @@ export const RolesIndexTable = () => {
         "cargando"
       ) : (
         <div>
-          {errors}
           {/* alert seccion */}
-          <AlertTable
-            severity={severity}
-            alertMessage={alertMessage}
-            setOpen={setShowAlertFlag}
-            open={showAlertFlag}
+          <AlertBox
+            severity={severityTable}
+            alertMessage={alertMessageTable}
+            setOpen={setShowAlertFlagTable}
+            open={showAlertFlagTable}
           />
           {/* header table */}
           <HeaderTable
             searchFilterChangeHandler={searchFilterChangeHandler}
-            handleOpenShowModal={handleOpenShowModal}
+            handleOpenShowModal={handleOpenShowRoleModal}
           />
           {/* datatable */}
           <div className="rounded-t-xl">
@@ -134,14 +132,28 @@ export const RolesIndexTable = () => {
           </div>
 
           {/* modals */}
-          <ShowRolModal
+          {/* show modal */}
+          <GeneralModal
+            row={row}
+            showModalFlag={showRoleModalFlag}
+            handleCloseShowModal={handleCloseShowRoleModal}
+          >
+            <FormRole
+              row={row}
+              handleCloseShowModal={handleCloseShowRoleModal}
+              setSeverity={setSeverityTable}
+              setAlertMessage={setAlertMessageTable}
+              setShowAlertFlag={setShowAlertFlagTable}
+            />
+          </GeneralModal>
+          {/* <ShowRolModal
             row={row}
             showModalFlag={showModalFlag}
             handleCloseShowModal={handleCloseShowModal}
             setSeverity={setSeverity}
             setAlertMessage={setAlertMessage}
             setShowAlertFlag={setShowAlertFlag}
-          />
+          /> */}
           {/* <DeleteDocenteModal
             row={row}
             deleteModalFlag={deleteModalFlag}

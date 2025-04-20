@@ -4,7 +4,9 @@ import { envs } from "../config";
 
 const baseURL = envs.apiServer.serverUrl;
 
-
+/*
+set generic endopints with baseUrl & authToken
+*/
 export async function getElementsBase(authTokens, endpointUrl) {
   try {
     const response = await axios.get(`${baseURL}${endpointUrl}`, {
@@ -12,7 +14,7 @@ export async function getElementsBase(authTokens, endpointUrl) {
         Authorization: `Bearer ${authTokens}`,
       },
     });
-    
+
     return response.data;
   } catch (error) {
     throw error; // El interceptor global ya ha formateado el error
