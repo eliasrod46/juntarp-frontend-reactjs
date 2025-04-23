@@ -44,15 +44,15 @@ export const HeaderTable = ({
         </div>
         {/* new */}
         <div className="my-5">
-          <Button onClick={() => handleOpenShowModal()} variant="outlined">
+          {/* <Button onClick={() => handleOpenShowModal()} variant="outlined">
             +
-          </Button>
+          </Button> */}
         </div>
         {/* general details */}
         {hasSuperAdminArchivoAccess ? (
           <div className="my-5 flex flex-col items-center justify-center gap-y-1">
             <div className="flex gap-x-5">
-              {(tab === 3 || tab === 1) && (
+              {(tab === 1) && (
                 <Button
                   onClick={() => handleOpenCheckSendModal("income")}
                   variant="outlined"
@@ -60,7 +60,7 @@ export const HeaderTable = ({
                   Entrada
                 </Button>
               )}
-              {(tab === 2 || tab === 1) && (
+              {(tab === 1) && (
                 <Button
                   onClick={() => handleOpenCheckSendModal("outcome")}
                   variant="outlined"

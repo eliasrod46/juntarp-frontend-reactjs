@@ -31,7 +31,6 @@ export const FormFolder = ({
   //when row recived, update dataForm
   useEffect(() => {
     if (row) {
-
       const dataFormRecived = {
         observations: row.observations ? row.observations : "",
         details: row.details ? row.details : "",

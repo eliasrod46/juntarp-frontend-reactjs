@@ -145,20 +145,24 @@ export const FoldersIndexTable = ({ tab }) => {
       name: "Detalles",
       cell: (row) => (
         <>
-          <TextField
-            id={`details-${row.id}`}
-            label="Detalles"
-            variant="outlined"
-            value={rowDetails[row.id] || ""}
-            onChange={(e) => {
-              const newDetails = {
-                ...rowDetails,
-                [row.id]: e.target.value,
-              };
-              setRowDetails(newDetails);
-            }}
-            size="small"
-          />
+          {tab == 1 ? (
+            <TextField
+              id={`details-${row.id}`}
+              label="Detalles"
+              variant="outlined"
+              value={rowDetails[row.id] || ""}
+              onChange={(e) => {
+                const newDetails = {
+                  ...rowDetails,
+                  [row.id]: e.target.value,
+                };
+                setRowDetails(newDetails);
+              }}
+              size="small"
+            />
+          ) : (
+            <span>{row.details}</span>
+          )}
         </>
       ),
       ignoreRowClick: true,
@@ -167,20 +171,24 @@ export const FoldersIndexTable = ({ tab }) => {
       name: "Observaciones",
       cell: (row) => (
         <>
-          <TextField
-            id={`details-${row.id}`}
-            label="Observaciones"
-            variant="outlined"
-            value={rowObservations[row.id] || ""}
-            onChange={(e) => {
-              const newObservations = {
-                ...rowObservations,
-                [row.id]: e.target.value,
-              };
-              setRowObservations(newObservations);
-            }}
-            size="small"
-          />
+          {tab == 1 ? (
+            <TextField
+              id={`details-${row.id}`}
+              label="Observaciones"
+              variant="outlined"
+              value={rowObservations[row.id] || ""}
+              onChange={(e) => {
+                const newObservations = {
+                  ...rowObservations,
+                  [row.id]: e.target.value,
+                };
+                setRowObservations(newObservations);
+              }}
+              size="small"
+            />
+          ) : (
+            <span>{row.observations}</span>
+          )}
         </>
       ),
       ignoreRowClick: true,
@@ -286,16 +294,22 @@ export const FoldersIndexTable = ({ tab }) => {
           .tz("America/Argentina/Buenos_Aires")
           .format("YYYY-MM-DD");
 
-        const observation = rowObservations[row.id];
-        const details = rowDetails[row.id];
-        const dataToSend = {
-          details: details ? details : generalDetails ? generalDetails : null,
-          observations: observation ? observation : null,
-          docenteId: row.docente.id,
-          outcome_date: action === "outcome" ? date : null,
-          income_date: action === "income" ? date : null,
-        };
-        await updateFolder(authTokens, row.id, dataToSend);
+        if (
+          (row.income_date == null && row.outcome_date == null) ||
+          (row.income_date && action === "outcome") ||
+          (row.outcome_date && action === "income")
+        ) {
+          const observation = rowObservations[row.id];
+          const details = rowDetails[row.id];
+          const dataToSend = {
+            details: details ? details : generalDetails ? generalDetails : null,
+            observations: observation ? observation : null,
+            docenteId: row.docente.id,
+            outcome_date: action === "outcome" ? date : null,
+            income_date: action === "income" ? date : null,
+          };
+          await updateFolder(authTokens, row.id, dataToSend);
+        }
       });
 
       getFoldersIngreso(authTokens);

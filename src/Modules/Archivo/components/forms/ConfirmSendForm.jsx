@@ -12,8 +12,6 @@ export const ConfirmSendForm = ({
   const TitleForm = () => {
     return (
       <div className="my-5 ">
-      
-
         <p className="text-xl w-10/12 mx-auto text-center font-bold">
           Va a {action == "income" ? "ingresar" : "sacar"} las carpetas (
           {bulksRows.length}) de los siguientes docentes{" "}
@@ -21,6 +19,16 @@ export const ConfirmSendForm = ({
         </p>
       </div>
     );
+  };
+
+  const getState = (row) => {
+    if (!row.income_date && !row.outcome_date) {
+      return "Sin estado";
+    } else if (row.income_date && !row.outcome_date) {
+      return "En archivo";
+    } else if (!row.income_date && row.outcome_date) {
+      return "Fuera de archivo";
+    }
   };
 
   const ButtonsForm = () => {
@@ -43,12 +51,13 @@ export const ConfirmSendForm = ({
 
       {/* data */}
       <div className="h-auto ">
-        <div >
+        <div>
           {bulksRows.map((element, i) => (
             <ul key={element.id}>
               <li className="text-lg">
-                *{i+1} Docente: {element.docente.lastname}, {element.docente.name}.
-                DNI {element.docente.dni}
+                *{i + 1} Docente: {element.docente.lastname},{" "}
+                {element.docente.name}. DNI {element.docente.dni}{". Estado:"}
+                {element ? getState(element) : ""}
               </li>
             </ul>
           ))}
