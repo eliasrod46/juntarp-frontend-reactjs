@@ -286,21 +286,16 @@ export const FoldersIndexTable = ({ tab }) => {
           .tz("America/Argentina/Buenos_Aires")
           .format("YYYY-MM-DD");
 
-        if (
-          (row.income_date && action === "outcome") ||
-          (row.outcome_date && action === "income")
-        ) {
-          const observation = rowObservations[row.id];
-          const details = rowDetails[row.id];
-          const dataToSend = {
-            details: details ? details : generalDetails ? generalDetails : null,
-            observations: observation ? observation : null,
-            docenteId: row.docente.id,
-            outcome_date: action === "outcome" ? date : null,
-            income_date: action === "income" ? date : null,
-          };
-          await updateFolder(authTokens, row.id, dataToSend);
-        }
+        const observation = rowObservations[row.id];
+        const details = rowDetails[row.id];
+        const dataToSend = {
+          details: details ? details : generalDetails ? generalDetails : null,
+          observations: observation ? observation : null,
+          docenteId: row.docente.id,
+          outcome_date: action === "outcome" ? date : null,
+          income_date: action === "income" ? date : null,
+        };
+        await updateFolder(authTokens, row.id, dataToSend);
       });
 
       getFoldersIngreso(authTokens);
