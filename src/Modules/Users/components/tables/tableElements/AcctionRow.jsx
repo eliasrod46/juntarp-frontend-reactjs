@@ -6,6 +6,7 @@ export const AcctionRow = ({
   handleOpenShowModal,
   handleOpenLinkRolesModal,
   handleOpenDeleteModal,
+  handleResetPasswordAlert,
 }) => {
   return (
     <div className="flex">
@@ -38,6 +39,16 @@ export const AcctionRow = ({
       </div>
       <div>
         <Button
+          onClick={() => handleResetPasswordAlert(row)}
+          variant="text"
+          color="success"
+        >
+          <span className="text-xs">Resetear Password</span>
+          {/* reset-password/:id */}
+        </Button>
+      </div>
+      <div>
+        <Button
           onClick={() => handleOpenDeleteModal(row)}
           variant="text"
           color="error"
@@ -61,4 +72,3 @@ export const AcctionRow = ({
     </div>
   );
 };
-

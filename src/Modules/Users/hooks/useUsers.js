@@ -7,6 +7,7 @@ import {
   updateElementApi,
   assignRolesApi,
   changePassswordApi,
+  resetPassswordApi,
 } from "@/Modules/Users/apis";
 import { generalErrorsHandler } from "@/config/generalErrorsHandler";
 
@@ -127,6 +128,26 @@ export function useUsers() {
     }
   }, []);
 
+  const resetPasssword = useCallback(async (authTokens, id) => {
+    setLoading(true);
+    setGeneralError(null);
+    setValidationErrors(null);
+    try {
+      await resetPassswordApi(authTokens, id);
+
+      return Promise.resolve();
+    } catch (catchError) {
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
+      return Promise.reject(catchError);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
     elements,
     getElements,
@@ -135,6 +156,7 @@ export function useUsers() {
     deleteElement,
     assignRoles,
     changePasssword,
+    resetPasssword,
     generalError,
     validationErrors,
     clearErrors,

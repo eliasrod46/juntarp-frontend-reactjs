@@ -6,11 +6,13 @@ import { UsersContext } from "@/Modules/Users/context";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
 import { AlertBox, GeneralModal } from "@/components";
 import { FormUser, LinkRolesForm } from "../";
+import { Alert, Button, Snackbar } from "@mui/material";
 import { FormDeleteUser } from "../forms/FormDeleteUser";
 
 export const UsersIndexTable = () => {
   //context
-  const { users, getUsers, clearErrors, loading } = useContext(UsersContext);
+  const { users, getUsers, clearErrors, loading, resetPasssword } =
+    useContext(UsersContext);
   const { authTokens } = useContext(AuthContext);
   //dataTable
   const [rows, setRows] = useState([]);
@@ -22,6 +24,8 @@ export const UsersIndexTable = () => {
   const [deleteModalFlag, setDeleteModalFlag] = useState(false);
 
   //alerts
+  const [showAlertFlagResetPassword, setShowAlertFlagResetPassword] =
+    useState(false);
   const [showAlertFlagTable, setShowAlertFlagTable] = useState(false);
   const [severityTable, setSeverityTable] = useState("success");
   const [alertMessageTable, setAlertMessageTable] = useState("");
@@ -93,6 +97,7 @@ export const UsersIndexTable = () => {
           handleOpenShowModal={handleOpenShowModal}
           handleOpenLinkRolesModal={handleOpenLinkRolesModal}
           handleOpenDeleteModal={handleOpenDeleteModal}
+          handleResetPasswordAlert={handleResetPasswordAlert}
         />
       ),
       ignoreRowClick: true,
@@ -153,6 +158,73 @@ export const UsersIndexTable = () => {
     setRows(filteredRows);
   };
 
+  const handleResetPasswordAlert = (user) => {
+    setRow(user);
+
+    setShowAlertFlagResetPassword(true);
+  };
+
+  const handleResetPassword = async () => {
+    try {
+      await resetPasssword(authTokens, row.id);
+      setShowAlertFlagResetPassword(false);
+
+      setSeverityTable("success");
+      setAlertMessageTable(`Password actualizado con exito`);
+      setShowAlertFlagTable(true);
+    } catch (error) {
+      setSeverityTable("error");
+      setShowAlertFlagTable(true);
+      if (error && error.message) {
+        setAlertMessageTable(`${error.message}`);
+      } else {
+        setAlertMessageTable("Ocurrio un error.");
+      }
+    }
+
+    setRow(null);
+  };
+
+  // ============================================> Components
+
+  const AlertResetPassswordBox = ({ setOpen, open, handleResetPassword }) => {
+    return (
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        // key={"top" + "center"}
+        open={open}
+        // autoHideDuration={duration}
+        // onClose={() => setOpen(false)} //close on duration
+      >
+        <Alert
+          severity="error"
+          sx={{ width: "100%", py: 2, fontSize: "1.25rem" }}
+          onClose={() => setOpen(false)} //close on click
+        >
+          <div className="flex flex-col gap-y-5">
+            <div className="pb-10">
+              <h2 className="text-2xl text-center">Resetear Password</h2>
+            </div>
+            <div className="pb-16">
+              <span className="text-cener text-xl">
+                {row &&
+                  `Vas a resetear el password del usuario: ${row.lastname}, ${row.name}`}
+              </span>
+              <span className="text-cener text-xl">Estas seguro?</span>
+            </div>
+            <div className="flex justify-between">
+              <Button color="success" onClick={() => handleResetPassword()}>
+                Resetear
+              </Button>
+              <Button color="info" onClick={() => setOpen(false)}>
+                Cancelar
+              </Button>
+            </div>
+          </div>
+        </Alert>
+      </Snackbar>
+    );
+  };
   // ============================================> render
   return (
     <div>
@@ -160,13 +232,20 @@ export const UsersIndexTable = () => {
         "cargando"
       ) : (
         <div>
-          {/* alert seccion */}
+          {/* alerts seccion */}
           <AlertBox
             severity={severityTable}
             alertMessage={alertMessageTable}
             setOpen={setShowAlertFlagTable}
             open={showAlertFlagTable}
           />
+
+          <AlertResetPassswordBox
+            setOpen={setShowAlertFlagResetPassword}
+            open={showAlertFlagResetPassword}
+            handleResetPassword={handleResetPassword}
+          />
+
           {/* header table */}
           <HeaderTable
             searchFilterChangeHandler={searchFilterChangeHandler}

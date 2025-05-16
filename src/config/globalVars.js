@@ -7,5 +7,5 @@ export const envs = {
       return `${this.url}:${this.port}/api`;
     },
   },
-  envState: "development"//production
+  envState: "development", //production
 };

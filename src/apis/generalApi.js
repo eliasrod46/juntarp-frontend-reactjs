@@ -62,3 +62,22 @@ export const deleteElementBase = async (authTokens, endpointUrl, id) => {
     throw error; // El interceptor global ya ha formateado el error
   }
 };
+
+export async function resetElementBase(authTokens, endpointUrl, id) {
+  try {
+    console.log();
+    
+    const response = await axios.patch(`${baseURL}${endpointUrl}/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens}`,
+      },
+    });
+    console.log('ok',response.data);
+    
+    return response.data;
+  } catch (error) {
+    console.log('error',error);
+    throw error; // El interceptor global ya ha formateado el error
+  }
+}
