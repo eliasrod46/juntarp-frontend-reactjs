@@ -10,7 +10,6 @@ export const UsersRoutes = () => {
       <UsersProvider>
         <Routes>
           <Route path="/" element={<IndexUsers />} />
-          <Route path="/profile" element={<IndexProfile />} />
         </Routes>
       </UsersProvider>
     </RolesProvider>

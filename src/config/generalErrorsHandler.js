@@ -4,6 +4,7 @@ export const generalErrorsHandler = async (
   setValidationErrors
 ) => {
   const { message } = catchError;
+ 
   if (message === "Errores de validación") {
     setGeneralError(catchError.message);
     setValidationErrors(catchError.validationErrors);

@@ -97,7 +97,7 @@ export const NavBar = () => {
               to="/inicio"
               className="md:p-4 py-2 block hover:text-purple-400"
             >
-              Home
+              Inicio
             </NavLink>
           </li>
           {/* <li>
@@ -117,14 +117,14 @@ export const NavBar = () => {
             </NavLink>
           </li> */}
 
-          <li>
+          {/* <li>
             <NavLink
               to="/archivo/carpetas"
               className="md:p-4 py-2 block hover:text-purple-400"
             >
               Archivo
             </NavLink>
-          </li>
+          </li> */}
 
           {/* <li>
             <NavLink

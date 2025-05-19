@@ -10,8 +10,11 @@ import {
   resetPassswordApi,
 } from "@/Modules/Users/apis";
 import { generalErrorsHandler } from "@/config/generalErrorsHandler";
+import { useNavigate } from "react-router-dom";
 
 export function useUsers() {
+  const navigate = useNavigate();
+
   const [elements, setElements] = useState();
   const [generalError, setGeneralError] = useState();
   const [validationErrors, setValidationErrors] = useState();
@@ -26,6 +29,9 @@ export function useUsers() {
       setElements(responseFromApi || []);
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        navigate("/"); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -44,6 +50,9 @@ export function useUsers() {
       await updateElementApi(authTokens, id, data);
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        navigate("/"); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -62,6 +71,10 @@ export function useUsers() {
       await createElementApi(authTokens, data);
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -78,6 +91,10 @@ export function useUsers() {
     try {
       await deleteElementApi(authTokens, id);
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -98,6 +115,10 @@ export function useUsers() {
       await assignRolesApi(authTokens, data);
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -117,6 +138,10 @@ export function useUsers() {
 
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -137,6 +162,10 @@ export function useUsers() {
 
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,

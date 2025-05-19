@@ -5,7 +5,9 @@ export const FoldersContext = createContext();
 export const FoldersProvider = ({ children }) => {
   const {
     elements,
+    historyElements,
     getElementsIngreso,
+    getElementsHistoryIngreso,
     createElement,
     deleteElement,
     updateElement,
@@ -17,7 +19,9 @@ export const FoldersProvider = ({ children }) => {
 
   const value = {
     folders: elements,
+    historyFolders: historyElements,
     getFoldersIngreso: getElementsIngreso,
+    getFoldersHistoryIngreso: getElementsHistoryIngreso,
     updateFolder: updateElement,
     createFolder: createElement,
     deleteFolder: deleteElement,

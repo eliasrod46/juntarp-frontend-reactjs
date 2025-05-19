@@ -23,6 +23,10 @@ export function useRoles() {
       setElements(responseFromApi || []);
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -41,6 +45,10 @@ export function useRoles() {
       await updateElementApi(authTokens, id, data);
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -59,6 +67,10 @@ export function useRoles() {
       await createElementApi(authTokens, data);
       return Promise.resolve();
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,
@@ -75,6 +87,10 @@ export function useRoles() {
     try {
       await deleteElementApi(authTokens, id);
     } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        
+        navigate('/'); // Redirige a la ruta '/login'
+      }
       await generalErrorsHandler(
         catchError,
         setGeneralError,

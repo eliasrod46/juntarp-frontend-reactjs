@@ -1,9 +1,8 @@
-//modal
-import React, { useEffect, useState, useContext } from "react";
-import Button from "@mui/material/Button";
-import AuthContext from "@/Modules/Auth/context/AuthContext";
-import { AlertBox, InputGroup } from "@/components";
 import { UsersContext } from "@/Modules/Users/context";
+import { useContext, useState } from "react";
+import AuthContext from "../../context/AuthContext";
+import { AlertBox, InputGroup } from "@/components";
+import { Button } from "@mui/material";
 
 export const FormChangePassword = () => {
   // structure dataForm
@@ -13,8 +12,8 @@ export const FormChangePassword = () => {
     confirmPassword: "",
   };
 
-  // contexts
-  //context
+  // // contexts
+  // //context
   const { changePasssword, validationErrors } = useContext(UsersContext);
   const { authTokens, authUser } = useContext(AuthContext);
 
@@ -84,7 +83,7 @@ export const FormChangePassword = () => {
         </Button>
       </div>
     );
-  };
+  };  
 
   return (
     <div className="mt-5 flex flex-col items-center justify-between h-full bg-gray-300 p-5 rounded-md w-5/6 m-auto">

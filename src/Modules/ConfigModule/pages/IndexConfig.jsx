@@ -1,9 +1,13 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import { Link } from "react-router-dom";
 
 export function IndexConfig() {
   return (
     <div>
       <h2 className="text-center text-2xl my-4">Configuración</h2>
+      <div>
+        <Breadcrumb/>
+      </div>
       <div className="flex gap-5">
         {/* Roles */}
         <div>

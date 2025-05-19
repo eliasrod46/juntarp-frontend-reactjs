@@ -78,7 +78,14 @@ export const GuessNavBar = () => {
       </div>
 
       {/* Items */}
-      <div className="hidden w-full md:flex md:items-center md:w-auto"></div>
+      <div className="hidden w-full md:flex md:items-center md:w-auto">
+          <NavLink
+            to="/inicio"
+            className="md:p-4 py-2 block hover:text-purple-400"
+          >
+            Inicio  
+          </NavLink>
+      </div>
 
       {/* Log items */}
       <div
@@ -96,14 +103,7 @@ export const GuessNavBar = () => {
           {authUser ? (
             <>
               {/* Principal */}
-              <li className="flex flex-col items-center justify-center">
-                <NavLink
-                  to="/inicio"
-                  className="md:p-4 py-2 block hover:text-purple-400"
-                >
-                  Principal
-                </NavLink>
-              </li>
+
               {/* logout */}
               <li className="mt-2.5 ">
                 <Button

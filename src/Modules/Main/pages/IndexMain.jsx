@@ -1,3 +1,4 @@
+import Breadcrumb from "@/components/Breadcrumb";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
 import { CanAccess } from "@/Modules/Auth/pages/CanAccess";
 import React, { useContext, useEffect, useState } from "react";
@@ -27,6 +28,9 @@ export const IndexMain = () => {
       <h2 className="text-center text-2xl my-4">
         Junta de Clasificacion Docente Rama Primaria
       </h2>
+      <div>
+        <Breadcrumb/>
+      </div>
       <div className="flex gap-5">
         <CanAccess permissions={[SuperAdmin]}>
           {/* Usuarios */}
@@ -126,9 +130,9 @@ export const IndexMain = () => {
           </div>
         </CanAccess>
         <CanAccess permissions={[SuperAdmin, MiembroArchivo]}>
-          {/* Archivo carpetas */}
+          {/* Archivo */}
           <div>
-            <Link to="/archivo/carpetas">
+            <Link to="/archivo">
               <div className="w-44 bg-gray-500 rounded-lg shadow-xl shadow-neutral-500 h-36 grid grid-cols-1">
                 <div className="w-16 m-auto">
                   <svg
@@ -152,7 +156,7 @@ export const IndexMain = () => {
                   </svg>
                 </div>
                 <div className="text-center text-xl m-auto">
-                  <span>Movimiento de carpetas</span>
+                  <span>Archivo</span>
                 </div>
               </div>
             </Link>
@@ -161,7 +165,7 @@ export const IndexMain = () => {
         {/* perfil */}
         <CanAccess permissions={[SuperAdmin, Usuario]}>
           <div>
-            <Link to="/usuarios/profile">
+            <Link to="/inicio/profile">
               <div className="w-44 bg-gray-500 rounded-lg shadow-xl shadow-neutral-500 h-36 grid grid-cols-1">
                 <div className="w-16 m-auto">
                   <svg
