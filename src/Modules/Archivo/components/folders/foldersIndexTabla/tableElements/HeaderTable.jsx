@@ -13,6 +13,8 @@ export const HeaderTable = ({
   searchFilterChangeHandler,
   generalDetailsChangeHandler,
   tab,
+  movedFolders,
+  totalFolders,
   handleOpenCheckSendModal,
   generalDetails,
   // handleOpenShowModal,
@@ -44,15 +46,26 @@ export const HeaderTable = ({
         </div>
         {/* new */}
         <div className="my-5">
-          {/* <Button onClick={() => handleOpenShowModal()} variant="outlined">
-            +
-          </Button> */}
+          {tab === 2 && (
+            <div>
+
+              <h1>Carpetas en archivo: {totalFolders}</h1>
+              <h1>Carpetas ingresadas hoy: {movedFolders}</h1>
+            </div>
+          )}
+            {tab === 3 && (
+            <div>
+
+              <h1>Carpetas fuera del archivo: {totalFolders}</h1>
+              <h1>Carpetas que salieron hoy: {movedFolders}</h1>
+            </div>
+          )}
         </div>
         {/* general details */}
         {hasSuperAdminArchivoAccess ? (
           <div className="my-5 flex flex-col items-center justify-center gap-y-1">
             <div className="flex gap-x-5">
-              {(tab === 1) && (
+              {tab === 1 && (
                 <Button
                   onClick={() => handleOpenCheckSendModal("income")}
                   variant="outlined"
@@ -60,7 +73,7 @@ export const HeaderTable = ({
                   Entrada
                 </Button>
               )}
-              {(tab === 1) && (
+              {tab === 1 && (
                 <Button
                   onClick={() => handleOpenCheckSendModal("outcome")}
                   variant="outlined"

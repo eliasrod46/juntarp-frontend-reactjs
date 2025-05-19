@@ -22,6 +22,9 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export const FoldersIndexTable = ({ tab }) => {
+  //states
+  const [movedFolders, setMovedFolders] = useState();
+  const [totalFolders, setTotalFolders] = useState();
   //context
   const {
     folders,
@@ -61,6 +64,8 @@ export const FoldersIndexTable = ({ tab }) => {
 
   useEffect(() => {
     if (tab && folders) {
+      const currentDate = new Date().toISOString().slice(0, 10);
+
       //all folders
       if (tab === 1) {
         setRows(folders);
@@ -69,20 +74,32 @@ export const FoldersIndexTable = ({ tab }) => {
 
       //folders in file
       if (tab === 2) {
+        const folderWithIncomeDate = folders.filter(
+          (objeto) => objeto.income_date === currentDate
+        );
+
         const filteredFolders = folders.filter(function (folder) {
           return folder.income_date !== null && folder.outcome_date === null;
         });
         setRows(filteredFolders);
         setStaticRows(filteredFolders);
+        setMovedFolders(folderWithIncomeDate.length);
+        setTotalFolders(filteredFolders.length);
       }
 
       //folders out file
       if (tab === 3) {
+        const folderWithOutcomeDate = folders.filter(
+          (objeto) => objeto.income_date === currentDate
+        );
+
         const filteredFolders = folders.filter(function (folder) {
           return folder.income_date === null && folder.outcome_date !== null;
         });
         setRows(filteredFolders);
         setStaticRows(filteredFolders);
+        setMovedFolders(folderWithOutcomeDate.length);
+        setTotalFolders(filteredFolders.length);
       }
     }
   }, [folders]);
@@ -344,6 +361,8 @@ export const FoldersIndexTable = ({ tab }) => {
               searchFilterChangeHandler={searchFilterChangeHandler}
               generalDetailsChangeHandler={generalDetailsChangeHandler}
               tab={tab}
+              movedFolders={movedFolders}
+              totalFolders={totalFolders}
               handleOpenCheckSendModal={handleOpenCheckSendModal}
               generalDetails={generalDetails}
               action={action}
