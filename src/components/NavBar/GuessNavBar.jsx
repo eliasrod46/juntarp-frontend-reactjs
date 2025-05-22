@@ -7,8 +7,12 @@ export const GuessNavBar = () => {
   const { authUser, logout } = useContext(AuthContext);
 
   const handleLogout = () => {
-    logout();
-    return <Navigate to="/" replace />;
+    logout().then(() => {
+      window.location.href = "/auth/login";
+      // navigate("/");           // Usa 'navigate' para la redirección
+    });
+    // logout();
+    // return <Navigate to="/" replace />;
   };
 
   return (
@@ -79,12 +83,12 @@ export const GuessNavBar = () => {
 
       {/* Items */}
       <div className="hidden w-full md:flex md:items-center md:w-auto">
-          <NavLink
-            to="/inicio"
-            className="md:p-4 py-2 block hover:text-purple-400"
-          >
-            Inicio  
-          </NavLink>
+        <NavLink
+          to="/inicio"
+          className="md:p-4 py-2 block hover:text-purple-400"
+        >
+          Inicio
+        </NavLink>
       </div>
 
       {/* Log items */}

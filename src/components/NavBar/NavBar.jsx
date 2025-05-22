@@ -9,7 +9,7 @@ export const NavBar = () => {
 
   const handleLogout = () => {
     logout().then(() => {
-      window.location.href = "/";
+      window.location.href = "/auth/login";
       // navigate("/");           // Usa 'navigate' para la redirección
     });
   };
@@ -100,49 +100,7 @@ export const NavBar = () => {
               Inicio
             </NavLink>
           </li>
-          {/* <li>
-            <NavLink
-              to="/ciclos"
-              className="md:p-4 py-2 block hover:text-purple-400"
-            >
-              Ciclos
-            </NavLink>
-          </li> */}
-          {/* <li>
-            <NavLink
-              to="/docentes"
-              className="md:p-4 py-2 block hover:text-purple-400"
-            >
-              Docentes
-            </NavLink>
-          </li> */}
-
-          {/* <li>
-            <NavLink
-              to="/archivo/carpetas"
-              className="md:p-4 py-2 block hover:text-purple-400"
-            >
-              Archivo
-            </NavLink>
-          </li> */}
-
-          {/* <li>
-            <NavLink
-              to="/turnos/tipos-turnos"
-              className="md:p-4 py-2 block hover:text-purple-400"
-            >
-              Tipos de turnos
-            </NavLink>
-          </li> */}
-
-          {/* <li>
-            <NavLink
-              to="/turnos"
-              className="md:p-4 py-2 block hover:text-purple-400"
-            >
-              Turnos
-            </NavLink>
-          </li> */}
+       
         </ul>
       </div>
 
