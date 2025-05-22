@@ -90,7 +90,7 @@ export const FoldersIndexTable = ({ tab }) => {
       //folders out file
       if (tab === 3) {
         const folderWithOutcomeDate = folders.filter(
-          (objeto) => objeto.income_date === currentDate
+          (objeto) => objeto.outcome_date === currentDate
         );
 
         const filteredFolders = folders.filter(function (folder) {
