@@ -17,7 +17,7 @@ export const HeaderTable = ({
   totalFolders,
   handleOpenCheckSendModal,
   generalDetails,
-  // handleOpenShowModal,
+  handleCreateFolders,
 }) => {
   const { can } = useContext(AuthContext);
   const [hasSuperAdminArchivoAccess, setHasSuperAdminArchivoAccess] =
@@ -31,6 +31,7 @@ export const HeaderTable = ({
 
     checkSuperAdminArchivoAccess();
   }, [can]);
+
   return (
     <div className="">
       <div className="flex items-center justify-around gap-x-5">
@@ -44,23 +45,28 @@ export const HeaderTable = ({
             size="small"
           />
         </div>
-        {/* new */}
+        {/* folders qty data */}
         <div className="my-5">
           {tab === 2 && (
             <div>
-
               <h1>Carpetas en archivo: {totalFolders}</h1>
               <h1>Carpetas ingresadas hoy: {movedFolders}</h1>
             </div>
           )}
-            {tab === 3 && (
+          {tab === 3 && (
             <div>
-
               <h1>Carpetas fuera del archivo: {totalFolders}</h1>
               <h1>Carpetas que salieron hoy: {movedFolders}</h1>
             </div>
           )}
         </div>
+
+        {hasSuperAdminArchivoAccess && (
+          <Button onClick={() => handleCreateFolders()} variant="outlined">
+            Crear Carpetas
+          </Button>
+        )}
+
         {/* general details */}
         {hasSuperAdminArchivoAccess ? (
           <div className="my-5 flex flex-col items-center justify-center gap-y-1">
@@ -106,6 +112,7 @@ export const HeaderTable = ({
         ) : (
           ""
         )}
+        {/* general details */}
       </div>
     </div>
   );

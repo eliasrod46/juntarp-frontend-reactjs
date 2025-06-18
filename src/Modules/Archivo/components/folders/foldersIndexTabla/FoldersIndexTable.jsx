@@ -33,6 +33,7 @@ export const FoldersIndexTable = ({ tab }) => {
     clearErrors,
     loading,
     updateFolder,
+    createFolders,
   } = useContext(FoldersContext);
   const { authTokens } = useContext(AuthContext);
 
@@ -272,6 +273,16 @@ export const FoldersIndexTable = ({ tab }) => {
     }
   };
 
+  //create folders
+  const handleCreateFolders = () => {
+    try{
+
+      createFolders(authTokens);
+    }catch(e){
+      
+    }
+  };
+
   // ============================================> table handlers
 
   const GeneralErrorsHeader = () => {
@@ -366,6 +377,7 @@ export const FoldersIndexTable = ({ tab }) => {
               handleOpenCheckSendModal={handleOpenCheckSendModal}
               generalDetails={generalDetails}
               action={action}
+              handleCreateFolders={handleCreateFolders}
             />
           </div>
           {/* datatable */}

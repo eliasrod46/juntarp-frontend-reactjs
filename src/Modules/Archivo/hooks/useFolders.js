@@ -6,6 +6,7 @@ import {
   getElementsIngresoApi,
   updateElementApi,
   getElementsHistoryIngresoApi,
+  createElementsApi,
 } from "../apis/foldersApi";
 import { generalErrorsHandler } from "@/config/generalErrorsHandler";
 
@@ -121,6 +122,28 @@ export function useFolders() {
     }
   };
 
+  const createElements = useCallback(async (authTokens) => {
+    setLoading(true);
+    setGeneralError(null);
+    try {
+      const responseFromApi = await createElementsApi(authTokens);
+      // console.log("Datos de la API:", responseFromApi); // <-- Imprime los datos recibidos de la API
+      setElements(responseFromApi || []);
+      return Promise.resolve(); // Resolvemos la promesa si no hay errores
+    } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        navigate("/"); // Redirige a la ruta '/login'
+      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
+    } finally {
+      setLoading(false); // Establecer loading a false DESPUÉS de la llamada a la API
+    }
+  }, []);
+
   const clearErrors = async () => {
     setGeneralError(null);
     setValidationErrors(null);
@@ -134,6 +157,7 @@ export function useFolders() {
     updateElement,
     createElement,
     deleteElement,
+    createElements,
     generalError,
     validationErrors,
     clearErrors,
