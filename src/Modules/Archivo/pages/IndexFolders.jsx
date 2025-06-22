@@ -5,20 +5,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export const IndexFolders = () => {
-  const [SuperAdmin, setSuperAdmin] = useState(false);
-  const [MiembroArchivo, setMiembroArchivo] = useState(false);
-  const [Usuario, setUsuario] = useState(false);
+  const [fileFoldersHistory, setFileFoldersHistory] = useState(false);
+  const [fileFolderIndex, setFileFolderIndex] = useState(false);
   const { can } = useContext(AuthContext);
 
   //set permissions
   useEffect(() => {
     const checkAccess = async () => {
-      const SAresult = await can(["Super Admin"]);
-      setSuperAdmin(SAresult);
-      const AMresult = await can(["Archivo", "Miembro"]);
-      setMiembroArchivo(AMresult);
-      const Uresult = await can(["Usuario"]);
-      setUsuario(AMresult);
+      setFileFoldersHistory(await can(["file/folders/history"]));
+      setFileFolderIndex(await can(["file/folder/index"]));
     };
     checkAccess();
   }, [can]);
@@ -31,8 +26,8 @@ export const IndexFolders = () => {
       </div>
 
       <div className="flex gap-5">
-        <CanAccess permissions={[SuperAdmin, MiembroArchivo]}>
-          {/* Movimientos de carpetas */}
+        {/* Movimientos de carpetas */}
+        <CanAccess permissions={[fileFolderIndex]}>
           <div>
             <Link to="/archivo/carpetas">
               <div className="w-44 bg-gray-500 rounded-lg shadow-xl shadow-neutral-500 h-36 grid grid-cols-1">
@@ -63,7 +58,9 @@ export const IndexFolders = () => {
               </div>
             </Link>
           </div>
-          {/* Movimientos de carpetas */}
+        </CanAccess>
+        {/* Historial de movimientos */}
+        <CanAccess permissions={[fileFoldersHistory]}>
           <div>
             <Link to="/archivo/historial-carpetas">
               <div className="w-44 bg-gray-500 rounded-lg shadow-xl shadow-neutral-500 h-36 grid grid-cols-1">
@@ -89,7 +86,7 @@ export const IndexFolders = () => {
                   </svg>
                 </div>
                 <div className="text-center text-xl m-auto">
-                  <span>Hisorial de movimientos</span>
+                  <span>Historial de movimientos</span>
                 </div>
               </div>
             </Link>

@@ -85,6 +85,9 @@ export const AuthProvider = ({ children }) => {
       ...authUser.auth.roles,
       ...authUser.auth.permissions,
     ];
+    if (authorization.includes("Super Admin")) {
+      return true;
+    }
 
     if (permissions_request.length >= 1) {
       for (const permision of permissions_request) {

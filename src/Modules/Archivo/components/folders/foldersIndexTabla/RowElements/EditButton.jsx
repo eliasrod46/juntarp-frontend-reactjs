@@ -5,20 +5,19 @@ import AuthContext from "@/Modules/Auth/context/AuthContext";
 
 export const EditButton = ({ row, handleOpenShowFolderModal }) => {
   const { can } = useContext(AuthContext);
-    const [superAdminMiembro, setSuperAdminMiembro] = useState(false);
+  const [fileFolderUpdate, setFileFolderUpdate] = useState(false);
 
   //set permissions
   useEffect(() => {
     const checkAccess = async () => {
-      const SAMresult = await can(["Super Admin","Miembro"]);
-      setSuperAdminMiembro(SAMresult);
+      setFileFolderUpdate(await can(["file/folder/update"]));
     };
     checkAccess();
   }, [can]);
 
   return (
     <div className="flex">
-      <CanAccess permissions={[superAdminMiembro]}>
+      <CanAccess permissions={[fileFolderUpdate]}>
         <div>
           <Button onClick={() => handleOpenShowFolderModal(row)} variant="text">
             <svg

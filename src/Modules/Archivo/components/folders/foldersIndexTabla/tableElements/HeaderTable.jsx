@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import {
   FormControl,
+  Input,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
+import { CanAccess } from "@/Modules/Auth/pages/CanAccess";
 
 export const HeaderTable = ({
   searchFilterChangeHandler,
@@ -20,16 +22,14 @@ export const HeaderTable = ({
   handleCreateFolders,
 }) => {
   const { can } = useContext(AuthContext);
-  const [hasSuperAdminArchivoAccess, setHasSuperAdminArchivoAccess] =
-    useState(false);
+  const [fileFolderMovements, setFileFolderMovements] = useState(false);
 
   useEffect(() => {
-    const checkSuperAdminArchivoAccess = async () => {
-      const result = await can(["Super Admin", "Archivo"]);
-      setHasSuperAdminArchivoAccess(result);
+    const checkPermissions = async () => {
+      setFileFolderMovements(await can(["file/folder/movements"]));
     };
 
-    checkSuperAdminArchivoAccess();
+    checkPermissions();
   }, [can]);
 
   return (
@@ -61,15 +61,9 @@ export const HeaderTable = ({
           )}
         </div>
 
-        {hasSuperAdminArchivoAccess && (
-          <Button onClick={() => handleCreateFolders()} variant="outlined">
-            Crear Carpetas
-          </Button>
-        )}
-
         {/* general details */}
-        {hasSuperAdminArchivoAccess ? (
-          <div className="my-5 flex flex-col items-center justify-center gap-y-1">
+        <CanAccess permissions={[fileFolderMovements]}>
+          <div className="my-5 flex items-center justify-center gap-x-3">
             <div className="flex gap-x-5">
               {tab === 1 && (
                 <Button
@@ -90,9 +84,12 @@ export const HeaderTable = ({
             </div>
             <div className="h-auto w-48">
               <FormControl className="w-full">
-                <InputLabel id="demo-simple-select-label">
-                  Detalles General
-                </InputLabel>
+                <div className="mb-3">
+                  <InputLabel id="demo-simple-select-label">
+                    Detalles General
+                  </InputLabel>
+                </div>
+
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -102,16 +99,23 @@ export const HeaderTable = ({
                   <MenuItem value={""}>Sin Detalle</MenuItem>
                   <MenuItem value={"Ingreso Masivo"}>Ingreso Masivo</MenuItem>
                   <MenuItem value={"Salida Masiva"}>Salida Masiva</MenuItem>
-                  <MenuItem value={"Ingreso Cristina"}>
-                    Ingreso Cristina
-                  </MenuItem>
                 </Select>
               </FormControl>
+              <div className="mt-3">
+                <FormControl className="w-full mt-5">
+                  <TextField
+                    label="Detalle Personalizado" // Label para el TextField
+                    variant="outlined" // O "filled", "standard"
+                    value={generalDetails} // O una nueva variable de estado
+                    onChange={generalDetailsChangeHandler} // O una nueva función de handler
+                    size="small"
+                  />
+                </FormControl>
+              </div>
             </div>
           </div>
-        ) : (
-          ""
-        )}
+        </CanAccess>
+
         {/* general details */}
       </div>
     </div>

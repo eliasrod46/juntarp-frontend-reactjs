@@ -21,3 +21,12 @@ export const createElementApi = async (authTokens, data) => {
 export const deleteElementApi = async (authTokens, id) => {
   return await deleteElementBase(authTokens, endpointURL, id);
 };
+
+export const assignElementsApi = async (authTokens, id, data) => {
+  return await updateElementBase(
+    authTokens,
+    `${endpointURL}/assign-permissions`,
+    id,
+    data
+  );
+};

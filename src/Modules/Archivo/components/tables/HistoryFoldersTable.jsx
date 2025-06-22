@@ -83,7 +83,12 @@ export const HistoryFoldersTable = () => {
     {
       name: "Usuario",
       selector: (row) => {
-        return `${row.user.lastname}, ${row.user.name}`;
+        if(row.user){
+
+          return `${row.user.lastname}, ${row.user.name}`;
+        }else{
+          return
+        }
       },
     },
     {

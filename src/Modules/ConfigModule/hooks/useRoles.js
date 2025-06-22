@@ -5,6 +5,7 @@ import {
   deleteElementApi,
   getElementsApi,
   updateElementApi,
+  assignElementsApi,
 } from "../apis/rolesApi";
 import { generalErrorsHandler } from "@/config/generalErrorsHandler";
 
@@ -24,8 +25,7 @@ export function useRoles() {
       return Promise.resolve();
     } catch (catchError) {
       if (catchError.statusCode == 401) {
-        
-        navigate('/'); // Redirige a la ruta '/login'
+        navigate("/"); // Redirige a la ruta '/login'
       }
       await generalErrorsHandler(
         catchError,
@@ -33,7 +33,7 @@ export function useRoles() {
         setValidationErrors
       );
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   }, []);
 
@@ -46,8 +46,7 @@ export function useRoles() {
       return Promise.resolve();
     } catch (catchError) {
       if (catchError.statusCode == 401) {
-        
-        navigate('/'); // Redirige a la ruta '/login'
+        navigate("/"); // Redirige a la ruta '/login'
       }
       await generalErrorsHandler(
         catchError,
@@ -68,8 +67,7 @@ export function useRoles() {
       return Promise.resolve();
     } catch (catchError) {
       if (catchError.statusCode == 401) {
-        
-        navigate('/'); // Redirige a la ruta '/login'
+        navigate("/"); // Redirige a la ruta '/login'
       }
       await generalErrorsHandler(
         catchError,
@@ -88,8 +86,7 @@ export function useRoles() {
       await deleteElementApi(authTokens, id);
     } catch (catchError) {
       if (catchError.statusCode == 401) {
-        
-        navigate('/'); // Redirige a la ruta '/login'
+        navigate("/"); // Redirige a la ruta '/login'
       }
       await generalErrorsHandler(
         catchError,
@@ -100,6 +97,27 @@ export function useRoles() {
       setLoading(false);
     }
   };
+
+  const assignElements = useCallback(async (authTokens, id, data) => {
+    setLoading(true);
+    setGeneralError(null);
+    setValidationErrors(null);
+    try {
+      await assignElementsApi(authTokens, id, data);
+      return Promise.resolve();
+    } catch (catchError) {
+      if (catchError.statusCode == 401) {
+        navigate("/"); // Redirige a la ruta '/login'
+      }
+      await generalErrorsHandler(
+        catchError,
+        setGeneralError,
+        setValidationErrors
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const clearErrors = async () => {
     setGeneralError(null);
@@ -112,6 +130,7 @@ export function useRoles() {
     updateElement,
     createElement,
     deleteElement,
+    assignElements,
     generalError,
     validationErrors,
     clearErrors,

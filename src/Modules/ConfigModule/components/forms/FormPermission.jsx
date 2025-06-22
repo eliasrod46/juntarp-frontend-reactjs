@@ -139,6 +139,16 @@ export const FormPermission = ({
             group: "Usuarios",
             route: "users/delete",
           },
+          {
+            name: "Resetear password",
+            group: "Usuarios",
+            route: "users/password/reset",
+          },
+          {
+            name: "Vincular roles",
+            group: "Usuarios",
+            route: "users/link/roles",
+          },
           //roles
           {
             name: "Ver roles",
@@ -184,29 +194,39 @@ export const FormPermission = ({
           //==>file
           //folders
           {
+            name: "Ver archivo",
+            group: "Archivo",
+            route: "file/index",
+          },
+          {
+            name: "Ver carpetas",
+            group: "Archivo",
+            route: "file/folder/index",
+          },
+          {
             name: "Ver historial de carpetas",
             group: "Archivo",
-            route: "files/folders/history",
+            route: "file/folders/history",
           },
           {
             name: "Ver historial de carpeta",
             group: "Archivo",
-            route: "files/folder/history",
+            route: "file/folder/history",
           },
           {
             name: "Mover carpetas",
             group: "Archivo",
-            route: "files/folder/movements",
+            route: "file/folder/movements",
           },
           {
             name: "Crear carpeta",
             group: "Archivo",
-            route: "files/folder/create",
+            route: "file/folder/create",
           },
           {
             name: "Editar carpeta",
             group: "Archivo",
-            route: "files/folder/update",
+            route: "file/folder/update",
           },
         ],
       };

@@ -3,10 +3,10 @@ import { useContext, useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { AcctionRow, HeaderTable, AlertTable } from "./tableElements";
 import { RolesContext } from "@/Modules/ConfigModule/context";
-// import { ShowRolModal } from "../..";
 import AuthContext from "@/Modules/Auth/context/AuthContext";
 import { AlertBox, GeneralModal } from "@/components";
 import { FormRole } from "../../forms/FormRole";
+import { FormAddPermissions } from "../../forms/FormAddPermissions";
 
 export const RolesIndexTable = () => {
   //context
@@ -19,6 +19,7 @@ export const RolesIndexTable = () => {
 
   // //modals
   const [showRoleModalFlag, setShowRoleModalFlag] = useState(false);
+  const [addPermissionsModalFlag, setAddPermissionsModalFlag] = useState(false);
   // const [deleteModalFlag, setDeleteModalFlag] = useState(false);
 
   //alerts
@@ -51,7 +52,7 @@ export const RolesIndexTable = () => {
         <AcctionRow
           row={row}
           handleOpenShowModal={handleOpenShowRoleModal}
-          // handleOpenDeleteModal={handleOpenDeleteModal}
+          handleOpenAddPermissionsModal={handleOpenAddPermissionsModal}
         />
       ),
       ignoreRowClick: true,
@@ -72,6 +73,25 @@ export const RolesIndexTable = () => {
     if (!clickClose) {
       setSeverityTable("success");
       setAlertMessageTable(`Rol ${row ? "actualizado" : "creado"} con exito`);
+      setShowAlertFlagTable(true);
+    }
+    setRow(null);
+  };
+
+  // add permisions modal
+  const handleOpenAddPermissionsModal = (row) => {
+    setAddPermissionsModalFlag(true);
+    setRow(row);
+  };
+
+  const handleCloseAddPermissionsModal = (clickClose = false) => {
+    setAddPermissionsModalFlag(false);
+    clearErrors();
+    if (!clickClose) {
+      getRoles(authTokens);
+
+      setSeverityTable("success");
+      setAlertMessageTable(`Permisos asignados con exito`);
       setShowAlertFlagTable(true);
     }
     setRow(null);
@@ -130,8 +150,8 @@ export const RolesIndexTable = () => {
           <div className="rounded-t-xl">
             <DataTable columns={columns} data={rows} pagination />
           </div>
-
           {/* modals */}
+
           {/* show modal */}
           <GeneralModal
             row={row}
@@ -146,14 +166,23 @@ export const RolesIndexTable = () => {
               setShowAlertFlag={setShowAlertFlagTable}
             />
           </GeneralModal>
-          {/* <ShowRolModal
+
+          {/* addPermissionsModal */}
+          <GeneralModal
             row={row}
-            showModalFlag={showModalFlag}
-            handleCloseShowModal={handleCloseShowModal}
-            setSeverity={setSeverity}
-            setAlertMessage={setAlertMessage}
-            setShowAlertFlag={setShowAlertFlag}
-          /> */}
+            showModalFlag={addPermissionsModalFlag}
+            handleCloseShowModal={handleCloseAddPermissionsModal}
+            title="Asignar permisos"
+          >
+            <FormAddPermissions
+              row={row}
+              handleCloseShowModal={handleCloseAddPermissionsModal}
+              setSeverity={setSeverityTable}
+              setAlertMessage={setAlertMessageTable}
+              setShowAlertFlag={setShowAlertFlagTable}
+            />
+          </GeneralModal>
+
           {/* <DeleteDocenteModal
             row={row}
             deleteModalFlag={deleteModalFlag}

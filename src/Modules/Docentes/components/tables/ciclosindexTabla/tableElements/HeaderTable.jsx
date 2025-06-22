@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
+import AuthContext from "@/Modules/Auth/context/AuthContext";
+import { CanAccess } from "@/Modules/Auth/pages/CanAccess";
 
 export const HeaderTable = ({
   searchFilterChangeHandler,
   handleOpenShowModal,
 }) => {
+  const { can } = useContext(AuthContext);
+  const [docentesCreate, setDocentesCreate] = useState(false);
+
+  //set permissions
+  useEffect(() => {
+    const checkAccess = async () => {
+      setDocentesCreate(await can(["docentes/create"]));
+    };
+    checkAccess();
+  }, [can]);
+
   return (
     <div className="flex items-center justify-center gap-x-5">
       {/* search */}
@@ -19,11 +32,13 @@ export const HeaderTable = ({
         />
       </div>
       {/* new */}
-      <div className="my-5">
-        <Button onClick={() => handleOpenShowModal()} variant="outlined">
-          +
-        </Button>
-      </div>
+      <CanAccess permissions={[docentesCreate]}>
+        <div className="my-5">
+          <Button onClick={() => handleOpenShowModal()} variant="outlined">
+            +
+          </Button>
+        </div>
+      </CanAccess>
     </div>
   );
 };
