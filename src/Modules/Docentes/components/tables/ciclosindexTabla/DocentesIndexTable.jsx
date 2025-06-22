@@ -7,11 +7,13 @@ import AuthContext from "@/Modules/Auth/context/AuthContext";
 import { GeneralModal } from "@/components";
 import { FormDeleteDocente } from "../../forms/FormDeleteDocente";
 import { FormDocente } from "../../forms/FormDocente";
+import { FoldersContext } from "@/Modules/Archivo/context";
 
 export const DocentesIndexTable = () => {
   //context
   const { docentes, getDocentes, clearErrors, loading } =
     useContext(DocentesContext);
+  const { createFolder } = useContext(FoldersContext);
 
   const { authTokens } = useContext(AuthContext);
   //dataTable
@@ -63,6 +65,7 @@ export const DocentesIndexTable = () => {
           row={row}
           handleOpenShowModal={handleOpenShowModal}
           handleOpenDeleteModal={handleOpenDeleteModal}
+          handleCreateFolder={handleCreateFolder}
         />
       ),
       ignoreRowClick: true,
@@ -100,6 +103,26 @@ export const DocentesIndexTable = () => {
     setRow(null);
   };
 
+  //fucntions
+  const handleCreateFolder = (row) => {
+    const dataToCreateFolder = [
+      {
+        state: 1,
+        originFile: 1,
+        docenteId: row.id,
+      },
+
+      {
+        state: 1,
+        originFile: 2,
+        docenteId: row.id,
+      },
+    ];
+
+    dataToCreateFolder.forEach((newFolderDto) => {
+      createFolder(authTokens, newFolderDto);
+    });
+  };
   // ============================================> table handlers
   const searchFilterChangeHandler = (e) => {
     const word = e.target.value;
