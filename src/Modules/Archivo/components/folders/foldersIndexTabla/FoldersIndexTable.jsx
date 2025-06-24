@@ -306,10 +306,17 @@ export const FoldersIndexTable = ({ tab }) => {
     const word = e.target.value;
     const dataToFilter = staticRows;
     const filteredRows = dataToFilter.filter(
-      (folder) =>
-        folder.docente.dni.toLowerCase().includes(word.toLowerCase()) || // TODO: change to number
-        folder.docente.name.toLowerCase().includes(word.toLowerCase()) ||
-        folder.docente.lastname.toLowerCase().includes(word.toLowerCase())
+      (folder) =>{
+
+        if (folder.docente) {
+          return folder.docente.dni.toLowerCase().includes(word.toLowerCase()) || // TODO: change to number
+          folder.docente.name.toLowerCase().includes(word.toLowerCase()) ||
+          folder.docente.lastname.toLowerCase().includes(word.toLowerCase())
+        }else{
+          console.log(folder);
+          
+        }
+      }
     );
 
     setRows(filteredRows);
